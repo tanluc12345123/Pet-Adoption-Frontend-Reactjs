@@ -1,0 +1,39 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #2F57C8;
+    position: fixed;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 2px 2px 6px black;
+}
+
+.title {
+    font-size: 30px;
+    font-family: IBM Plex Sans, sans-serif;
+}
+
+.error {
+    font-size: 15px;
+    font-family: IBM Plex Sans, sans-serif;
+    color: red;
+    margin-bottom: 10px;
+}
+
+.input {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
