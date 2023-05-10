@@ -3,7 +3,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: #2F57C8;
+    background-color: #2F57C8; 
     position: fixed;
     overflow: auto;
     height: 100%;

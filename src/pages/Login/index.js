@@ -26,7 +26,12 @@ const Login = () => {
         try {
             setLoading(true)
             const response = await Api.login(username, password)
+            console.log(response.data)
             if (response.data.status === "Success") {
+                localStorage.setItem("id", response.data.data.id);
+                localStorage.setItem('token', response.data.data.type + " " + response.data.data.token);
+                localStorage.setItem('expiresAt', response.data.data.expiresAt);
+                localStorage.setItem('username', response.data.data.phone);
                 navigate('/home')
             } else {
                 setError(response.data.message)
