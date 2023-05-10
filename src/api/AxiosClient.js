@@ -1,19 +1,19 @@
 import axios, { HttpStatusCode } from "axios";
 
-REACT_APP_BASE_URL = "http://localhost:8080/api";
+const REACT_BASE_URL = "http://localhost:8080/api";
 
-const axiosClient = axios.create({
-    baseURL: REACT_APP_BASE_URL,
+const AxiosClient = axios.create({
+    baseURL: REACT_BASE_URL,
     headers: {
         "content-type": "application/json",
     },
     //paramsSerializer: params => queryString.stringify(params),
 });
-axiosClient.interceptors.request.use(async (config) => {
+AxiosClient.interceptors.request.use(async (config) => {
     // Handle token here ...
     return config;
 });
-axiosClient.interceptors.response.use(
+AxiosClient.interceptors.response.use(
     (response) => {
         return response;
     },
@@ -21,17 +21,17 @@ axiosClient.interceptors.response.use(
         // Handle errors
         switch (error.response.status) {
             case HttpStatusCode.BadRequest:
-                console.log(strings.errorMessageBadRequest);
+                console.log(error.message);
 
             case HttpStatusCode.InternalServerError:
-                console.log(strings.errorMessageServerDie);
+                console.log(error.message);
 
             default:
                 console.log(error.message);
         }
 
-        throw null;
+        throw error;
     }
 );
 
-export default axiosClient;
+export default AxiosClient;
