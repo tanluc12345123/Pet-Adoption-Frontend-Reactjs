@@ -29,7 +29,7 @@ const Sidebar = () => {
                         direction="row"
                         justifyContent="center"
                     >
-                        {/* <Avatar src={assets.images.logo} /> */}
+                        <Avatar src='/src/assets/ic_avatar.svg' />
                     </Stack>
                 </Toolbar>
                 {appRoutes.map((route, index) => (

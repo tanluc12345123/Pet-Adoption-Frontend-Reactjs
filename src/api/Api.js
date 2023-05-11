@@ -7,6 +7,13 @@ const Api = {
             phone: username,
             password: password
         })
+    },
+    changePassword: (userId, oldPassword, newPassword, confirmPassword) => {
+        return AxiosClient.put(Route.USER + '/' + userId + Route.CHANGE_PASSWORD, {
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+            confirmPassword: confirmPassword
+        })
     }
 }
 

@@ -11,6 +11,8 @@ const AxiosClient = axios.create({
 });
 AxiosClient.interceptors.request.use(async (config) => {
     // Handle token here ...
+    const token = localStorage.getItem('token')
+    config.headers.Authorization = token ? token : '';
     return config;
 });
 AxiosClient.interceptors.response.use(
