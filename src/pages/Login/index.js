@@ -47,12 +47,14 @@ const Login = () => {
 
     return (
         <BaseScreen isLoading={isLoading}>
-            <div className='card'>
-                <p className='title'>Welcome back!</p>
-                <InputComponent aria-label="Username" placeholder="Username…" className="input" onChange={handleUsernameChange} />
-                <InputComponent aria-label="Password" placeholder="Password…" type="password" className="input" onChange={handlePasswordChange} />
-                {error && <span className='error'>{error}</span>}
-                <Button full onClick={onClickLogin}>Login</Button>
+            <div className='container-login'>
+                <div className='card'>
+                    <p className='title'>Welcome back!</p>
+                    <InputComponent aria-label="Username" placeholder="Username…" className="input" onChange={handleUsernameChange} />
+                    <InputComponent aria-label="Password" placeholder="Password…" type="password" className="input" onChange={handlePasswordChange} />
+                    {error && <span className='error'>{error}</span>}
+                    <Button full onClick={onClickLogin}>Login</Button>
+                </div>
             </div>
         </BaseScreen>
     )
