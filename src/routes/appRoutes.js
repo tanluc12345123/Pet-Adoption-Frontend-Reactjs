@@ -3,63 +3,49 @@ import AppsOutlinedIcon from '@mui/icons-material/AppsOutlined';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import PersonIcon from '@mui/icons-material/Person';
 import Home from '../pages/Home/index';
+import PetPageLayout from '../pages/Pet/PetPageLayout';
+import PetSchedulePage from '../pages/Pet/PetSchedule/index';
+import PetPage from '../pages/Pet/Pet/index';
 
 const appRoutes = [
-    {
-        index: true,
-        element: <Home />,
-        state: "home"
-    },
     {
         path: "/home",
         element: <Home />,
         state: "home",
         sidebarProps: {
-            displayText: "Home",
-            icon: <DashboardOutlinedIcon />
+            displayText: "Account",
+            icon: <PersonIcon />
         }
     },
-    // {
-    //     path: "/dashboard",
-    //     element: <DashboardPageLayout />,
-    //     state: "dashboard",
-    //     sidebarProps: {
-    //         displayText: "Dashboard",
-    //         icon: <DashboardOutlinedIcon />
-    //     },
-    //     child: [
-    //         {
-    //             index: true,
-    //             element: <DashboardIndex />,
-    //             state: "dashboard.index"
-    //         },
-    //         {
-    //             path: "/dashboard/default",
-    //             element: <DefaultPage />,
-    //             state: "dashboard.default",
-    //             sidebarProps: {
-    //                 displayText: "Default"
-    //             },
-    //         },
-    //         {
-    //             path: "/dashboard/analytics",
-    //             element: <AnalyticsPage />,
-    //             state: "dashboard.analytics",
-    //             sidebarProps: {
-    //                 displayText: "Analytic"
-    //             }
-    //         },
-    //         {
-    //             path: "/dashboard/saas",
-    //             element: <SaasPage />,
-    //             state: "dashboard.saas",
-    //             sidebarProps: {
-    //                 displayText: "Saas"
-    //             }
-    //         }
-    //     ]
-    // },
+    {
+        path: "/pet",
+        element: <PetPageLayout />,
+        state: "pet",
+        sidebarProps: {
+            displayText: "Pet",
+            icon: <DashboardOutlinedIcon />
+        },
+        child: [
+            {
+                path: "/pet/index",
+                element: <PetPage />,
+                state: "pet.index",
+                sidebarProps: {
+                    displayText: "Pet"
+                },
+            },
+            {
+                path: "/pet/schedule",
+                element: <PetSchedulePage />,
+                state: "pet.schedule",
+                sidebarProps: {
+                    displayText: "Schedule"
+                },
+            },
+        ]
+    },
     // {
     //     path: "/component",
     //     element: <ComponentPageLayout />,

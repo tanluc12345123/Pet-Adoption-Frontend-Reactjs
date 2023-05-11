@@ -25,6 +25,9 @@ const Topbar = (props) => {
     const handleClick = (value) => {
         if (value === 'Logout') {
             handleLogout()
+        } else {
+            navigate('/home')
+            handleCloseUserMenu()
         }
     }
 
