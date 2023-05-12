@@ -4,6 +4,7 @@ import BaseScreen from '../../../components/BaseScreen/BaseScreen';
 import { Paper, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TableFooter, TablePagination, Box } from "@mui/material";
 import InputComponent from '../../../components/InputComponent/InputComponent';
 import Button from '../../../components/Button/Button';
+import ModalAddPet from '../../../components/ModalAddPet/ModalAddPet';
 
 const headerCellPet = [
     {
@@ -49,6 +50,7 @@ const headerCellPet = [
 const PetPage = () => {
     const [isLoading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
+    const [openModalAdd, setOpenModalAdd] = useState(false)
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [searchResult, setSearchResult] = useState('');
@@ -79,7 +81,8 @@ const PetPage = () => {
                     <InputComponent aria-label="Search" placeholder="Search..." onChange={handleSearchResultChange} value={searchResult} />
                 </Box>
                 <Box sx={{ justifyContent: 'flex-end', display: 'flex', position: 'absolute', right: 0, marginRight: 8 }}>
-                    <Button style={{ padding: 14 }} onClick={() => setOpen(true)}>Add Pet</Button>
+                    <Button style={{ padding: 14 }} onClick={() => setOpenModalAdd(true)}>Add Pet</Button>
+                    <ModalAddPet open={openModalAdd} handleClose={() => setOpenModalAdd(false)}/>
                 </Box>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
