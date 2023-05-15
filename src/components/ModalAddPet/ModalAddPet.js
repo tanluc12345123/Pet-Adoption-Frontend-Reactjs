@@ -59,11 +59,73 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 }));
 
 const ModalAddPet = ({ open, handleClose }) => {
+    const [name, setName] = useState('')
+    const [type, setType] = useState(1)
+    const [gender, setGender] = useState(1)
+    const [color, setColor] = useState('')
+    const [breed, setBreed] = useState('')
+    const [weight, setWeight] = useState(0)
     const [age, setAge] = useState(0)
+    const [price, setPrice] = useState(0)
+    const [dateReceive, setDateReceive] = useState(null)
+    const [description, setDescription] = useState(null)
+    const [image1, setImage1] = useState('')
+    const [image2, setImage2] = useState('')
+    const [image3, setImage3] = useState('')
+    const [image4, setImage4] = useState('')
 
-    const handleChange = (event) => {
-        setAge(event.target.value)
+    const handleUploadImage = (value, type) => {
+        switch (type) {
+            case 'image1':
+                setImage1(value)
+                break;
+            case 'image2':
+                setImage2(value)
+                break;
+            case 'image3':
+                setImage3(value)
+                break;
+            case 'image4':
+                setImage4(value)
+                break;
+        }
     }
+
+    const handleChange = (e, type) => {
+        switch (type) {
+            case 'name':
+                setName(e.target.value)
+                break;
+            case 'type':
+                setType(e.target.value)
+                break;
+            case 'gender':
+                setGender(e.target.value)
+                break;
+            case 'color':
+                setColor(e.target.value)
+                break;
+            case 'breed':
+                setBreed(e.target.value)
+                break;
+            case 'weight':
+                setWeight(e.target.value)
+                break;
+            case 'age':
+                setAge(e.target.value)
+                break;
+            case 'price':
+                setPrice(e.target.value)
+                break;
+            case 'dateReceive':
+                setDateReceive(e)
+                break;
+            case 'description':
+                setDescription(e.target.value)
+                break;
+        }
+    }
+
     return (
         <div>
             <BootstrapDialog
@@ -81,14 +143,14 @@ const ModalAddPet = ({ open, handleClose }) => {
                             <Typography gutterBottom>
                                 Name:
                             </Typography>
-                            <InputComponent />
+                            <InputComponent onChange={(value) => handleChange(value, 'name')} value={name} />
                             <Typography gutterBottom>
                                 Type:
                             </Typography>
                             <FormControl sx={{ minWidth: 120, borderRadius: 2 }} size="small">
                                 <Select
-                                    value={age}
-                                    onChange={handleChange}
+                                    value={type}
+                                    onChange={(value) => handleChange(value, 'type')}
                                     displayEmpty
                                     input={<BootstrapInput />}
                                 >
@@ -101,23 +163,23 @@ const ModalAddPet = ({ open, handleClose }) => {
                             </Typography>
                             <FormControl sx={{ minWidth: 120, borderRadius: 2 }} size="small">
                                 <Select
-                                    value={age}
-                                    onChange={handleChange}
+                                    value={gender}
+                                    onChange={(value) => handleChange(value, 'gender')}
                                     displayEmpty
                                     input={<BootstrapInput />}
                                 >
-                                    <MenuItem value={10}>Male</MenuItem>
-                                    <MenuItem value={20}>Female</MenuItem>
+                                    <MenuItem value={1}>Male</MenuItem>
+                                    <MenuItem value={0}>Female</MenuItem>
                                 </Select>
                             </FormControl>
                             <Typography gutterBottom>
                                 Color:
                             </Typography>
-                            <InputComponent />
+                            <InputComponent onChange={(value) => handleChange(value, 'color')} value={color} />
                             <Typography gutterBottom>
                                 Breed:
                             </Typography>
-                            <InputComponent />
+                            <InputComponent onChange={(value) => handleChange(value, 'breed')} value={breed} />
                             <Typography gutterBottom>
                                 Weight:
                             </Typography>
@@ -125,13 +187,15 @@ const ModalAddPet = ({ open, handleClose }) => {
                                 sx={{ borderRadius: 3, borderColor: '#ced4da', paddingY: 0.5, width: 320 }}
                                 size='small'
                                 type='text'
+                                value={weight}
+                                onChange={(value) => handleChange(value, 'weight')}
                                 inputMode={<BootstrapInput />}
                                 endAdornment={<InputAdornment position="end">kg</InputAdornment>}
                             />
                             <Typography gutterBottom>
                                 Age:
                             </Typography>
-                            <InputComponent type='number' />
+                            <InputComponent type='number' onChange={(value) => handleChange(value, 'age')} value={age} />
                         </Box>
                         <Box>
                             <Typography gutterBottom>
@@ -141,6 +205,8 @@ const ModalAddPet = ({ open, handleClose }) => {
                                 sx={{ borderRadius: 3, borderColor: '#ced4da', paddingY: 0.5, width: 320 }}
                                 size='small'
                                 type='number'
+                                value={price}
+                                onChange={(value) => handleChange(value, 'price')}
                                 inputMode={<BootstrapInput />}
                                 endAdornment={<InputAdornment position="end">$</InputAdornment>}
                             />
@@ -148,23 +214,23 @@ const ModalAddPet = ({ open, handleClose }) => {
                                 Date received:
                             </Typography>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker sx={{ width: 320 }} slotProps={{ textField: { size: 'small' } }} />
+                                <DatePicker sx={{ width: 320 }} slotProps={{ textField: { size: 'small' } }} onChange={(value) => handleChange(value, 'dateReceive')} value={dateReceive} />
                             </LocalizationProvider>
                             <Typography gutterBottom>
                                 Description:
                             </Typography>
-                            <StyledTextarea minRows={3} maxRows={4} />
+                            <StyledTextarea minRows={3} maxRows={4} onChange={(value) => handleChange(value, 'description')} value={description} />
                             <Typography gutterBottom>
                                 Image:
                             </Typography>
                             <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
                                 <Stack direction="column" spacing={{ xs: 2 }}>
-                                    <ImageComponent />
-                                    <ImageComponent />
+                                    <ImageComponent image={image1} onHandleUploadImage={(value) => handleUploadImage(value, 'image1')} />
+                                    <ImageComponent image={image2} onHandleUploadImage={(value) => handleUploadImage(value, 'image2')} />
                                 </Stack>
                                 <Stack direction="column" spacing={{ xs: 2 }}>
-                                    <ImageComponent />
-                                    <ImageComponent />
+                                    <ImageComponent image={image3} onHandleUploadImage={(value) => handleUploadImage(value, 'image3')} />
+                                    <ImageComponent image={image4} onHandleUploadImage={(value) => handleUploadImage(value, 'image4')} />
                                 </Stack>
                             </Stack>
                         </Box>

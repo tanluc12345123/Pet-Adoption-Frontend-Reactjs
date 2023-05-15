@@ -3,14 +3,13 @@ import { Box, Input, Avatar } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
 
-const ImageComponent = () => {
-    const [image, setImage] = useState('')
-
+const ImageComponent = ({ image, onHandleUploadImage }) => {
     const handlePreviewImage = (e) => {
         if (e.target.files[0]) {
-            setImage(URL.createObjectURL(e.target.files[0]))
+            onHandleUploadImage(URL.createObjectURL(e.target.files[0]))
         }
     }
+
     return (
         <label>
             <Box

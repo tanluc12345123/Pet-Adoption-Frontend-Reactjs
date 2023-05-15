@@ -6,7 +6,6 @@ import InputComponent from '../../components/InputComponent/InputComponent'
 import Api from '../../api/Api';
 import { useNavigate } from 'react-router-dom'
 
-
 const Login = () => {
     const [isLoading, setLoading] = useState(false)
     const [username, setUsername] = useState('')
@@ -26,7 +25,6 @@ const Login = () => {
         try {
             setLoading(true)
             const response = await Api.login(username, password)
-            console.log(response.data)
             if (response.data.status === "Success") {
                 localStorage.setItem("id", response.data.data.id);
                 localStorage.setItem('token', response.data.data.type + " " + response.data.data.token);

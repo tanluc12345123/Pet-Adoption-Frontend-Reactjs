@@ -14,6 +14,22 @@ const Api = {
             newPassword: newPassword,
             confirmPassword: confirmPassword
         })
+    },
+    getTypesPet: () => {
+        return AxiosClient.get(Route.TYPE_PET)
+    },
+    addTypePet: (nameType) => {
+        return AxiosClient.post(Route.ADD_TYPE_PET, {
+            nameType: nameType
+        })
+    },
+    editTypePet: (id, nameType) => {
+        return AxiosClient.put(Route.EDIT_TYPE_PET + '/' + id, {
+            nameType: nameType
+        })
+    },
+    deleteTypePet: (id) => {
+        return AxiosClient.delete(Route.EDIT_TYPE_PET + '/' + id)
     }
 }
 
