@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
 import BaseScreen from '../../../components/BaseScreen/BaseScreen';
-import { Paper, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TableFooter, TablePagination, Box, FormControl, Select, InputBase, MenuItem, Backdrop, CircularProgress } from "@mui/material";
+import { Paper, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TableFooter, TablePagination, Box, FormControl, Select, InputBase, MenuItem, Backdrop, CircularProgress, Dialog } from "@mui/material";
 import InputComponent from '../../../components/InputComponent/InputComponent';
 import Button from '../../../components/Button/Button';
-import ModalAddPet from '../../../components/ModalAddPet/ModalAddPet';
+import ModalAddPet from '../../../components/ModalPet/ModalAddPet';
 import { styled } from '@mui/material/styles';
 import ModalAddTypePet from '../../../components/ModalTypePet/ModalAddTypePet';
 import Api from '../../../api/Api';
@@ -13,6 +13,8 @@ import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutli
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import ModalEditTypePet from '../../../components/ModalTypePet/ModalEditTypePet';
 import ModalDeleteTypePet from '../../../components/ModalTypePet/ModalDeleteTypePet';
+import ModalEditPet from '../../../components/ModalPet/ModalEditPet';
+import Modal from '../../../components/Modal/Modal';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
@@ -64,8 +66,8 @@ const headerCellPet = [
         align: 'right'
     },
     {
-        id: 'name',
-        label: 'Name Pet',
+        id: 'breed',
+        label: 'Breed',
         align: 'right'
     },
     {
@@ -93,27 +95,44 @@ const PetPage = () => {
     const [isLoading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [openModalAdd, setOpenModalAdd] = useState(false)
+    const [openModalEdit, setOpenModalEdit] = useState(false)
+    const [openModalDelete, setOpenModalDelete] = useState(false)
     const [openModalTypeAdd, setOpenModalTypeAdd] = useState(false)
     const [openModalTypeEdit, setOpenModalTypeEdit] = useState(false)
     const [openModalTypeDelete, setOpenModalTypeDelete] = useState(false)
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [pagePet, setPagePet] = useState(0);
+    const [rowsPerPagePet, setRowsPerPagePet] = useState(5);
+
+    const [pageTypePet, setPageTypePet] = useState(0);
+    const [rowsPerPageTypePet, setRowsPerPageTypePet] = useState(5);
+
     const [searchResult, setSearchResult] = useState('');
     const [option, setOption] = useState(0);
     const [content, setContent] = useState('');
     const [types, setTypes] = useState([]);
     const [type, setType] = useState({});
+    const [pets, setPets] = useState([]);
+    const [pet, setPet] = useState({});
     const [reload, setReload] = useState(false)
 
     const title = "Add new pet";
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+    const handleChangePagePet = (event, newPage) => {
+        setPagePet(newPage);
     };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
+    const handleChangeRowsPerPagePet = (event) => {
+        setRowsPerPagePet(+event.target.value);
+        setPagePet(0);
+    };
+
+    const handleChangePageTypePet = (event, newPage) => {
+        setPageTypePet(newPage);
+    };
+
+    const handleChangeRowsPerPageTypePet = (event) => {
+        setRowsPerPageTypePet(+event.target.value);
+        setPageTypePet(0);
     };
 
     const handleSearchResultChange = (event) => {
@@ -155,13 +174,30 @@ const PetPage = () => {
         }
     }
 
+    const fetchPets = async () => {
+        try {
+            setLoading(true)
+            const response = await Api.getPets()
+            if (response.data.status === "Success") {
+                setPets(response.data.data)
+            }
+            console.log(response.data)
+            setLoading(false)
+        } catch (error) {
+            setContent(error.message)
+            setOpen(true)
+            setLoading(false)
+        }
+    }
+
     useEffect(() => {
         fetchTypesPet()
+        fetchPets()
     }, [reload])
 
     return (
         <BaseScreen isLoading={isLoading} title={title} handleClose={() => setOpen(false)} open={open} content={content}>
-            <FormControl sx={{ minWidth: 120, borderRadius: 2, marginBottom: 2 }} size="small">
+            <FormControl sx={{ minWidth: 120, borderRadius: 2, marginBottom: 2, marginLeft: 3 }} size="small">
                 <Select
                     value={option}
                     displayEmpty
@@ -181,48 +217,75 @@ const PetPage = () => {
                     <Box sx={{ marginBottom: 2, display: 'flex' }}>
                         <InputComponent aria-label="Search" placeholder="Search..." onChange={handleSearchResultChange} value={searchResult} />
                     </Box>
-                    <Box sx={{ justifyContent: 'flex-end', display: 'flex', position: 'absolute', right: 0, marginRight: 8 }}>
+                    <Box sx={{ justifyContent: 'flex-end', display: 'flex', position: 'absolute', right: 0, marginRight: 11 }}>
                         <Button style={{ padding: 14 }} onClick={() => setOpenModalAdd(true)}>Add Pet</Button>
-                        <ModalAddPet open={openModalAdd} handleClose={() => setOpenModalAdd(false)} />
+                        <ModalAddPet open={openModalAdd} handleClose={() => setOpenModalAdd(false)} types={types} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} />
                     </Box>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
                                     {headerCellPet.map((column) => (
-                                        <TableCell key={column.id} align={column.align} sx={{ fontWeight: 'bold' }}>
+                                        <TableCell key={column.id} sx={{ fontWeight: 'bold' }}>
                                             {column.label}
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                <TableRow>
+                                {pets && (rowsPerPagePet > 0
+                                    ? pets.slice(pagePet * rowsPerPagePet, pagePet * rowsPerPagePet + rowsPerPagePet)
+                                    : pets
+                                ).map((pet) => (
+                                    <TableRow>
+                                        <TableCell>{pet.name}</TableCell>
+                                        <TableCell>{pet.nameType}</TableCell>
+                                        <TableCell>{pet.gender ? 'Male' : 'Female'}</TableCell>
+                                        <TableCell>{pet.breed}</TableCell>
+                                        <TableCell>{pet.age}</TableCell>
+                                        <TableCell>{pet.price}</TableCell>
+                                        <TableCell>{pet.adopted ? 'Done' : 'None'}</TableCell>
+                                        <TableCell>
+                                            <Box sx={{ display: 'flex' }}>
+                                                <Button variant="contained" style={{ marginRight: 10, backgroundColor: 'green' }}
+                                                    onClick={() => {
+                                                        setOpenModalEdit(true)
+                                                        setPet(pet)
+                                                    }}
+                                                ><DriveFileRenameOutlineIcon /></Button>
+                                                <Button variant="contained" style={{ backgroundColor: 'red' }} onClick={() => {
+                                                    setOpenModalDelete(true)
+                                                    setPet(pet)
+                                                }}><DeleteSweepIcon /></Button>
+                                            </Box>
+                                        </TableCell>
 
-                                </TableRow>
+                                    </TableRow>
+                                ))}
                             </TableBody>
                             <TableFooter>
                                 <TableRow>
                                     <TablePagination
                                         rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                        colSpan={3}
-                                        count={1}
-                                        rowsPerPage={rowsPerPage}
-                                        page={page}
+                                        colSpan={4}
+                                        count={pets.length}
+                                        rowsPerPage={rowsPerPagePet}
+                                        page={pagePet}
                                         SelectProps={{
                                             inputProps: {
                                                 'aria-label': 'rows per page',
                                             },
                                             native: true,
                                         }}
-                                        onPageChange={handleChangePage}
-                                        onRowsPerPageChange={handleChangeRowsPerPage}
+                                        onPageChange={handleChangePagePet}
+                                        onRowsPerPageChange={handleChangeRowsPerPagePet}
                                     />
                                 </TableRow>
                             </TableFooter>
                         </Table>
                     </TableContainer>
                 </Paper>
+                <ModalEditPet open={openModalEdit} handleClose={() => setOpenModalEdit(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} pet={pet} types={types} />
             </Box>
 
 
@@ -251,7 +314,10 @@ const PetPage = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {types && types.map((type, index) => (
+                                {types && (rowsPerPageTypePet > 0
+                                    ? types.slice(pageTypePet * rowsPerPageTypePet, pageTypePet * rowsPerPageTypePet + rowsPerPageTypePet)
+                                    : types
+                                ).map((type, index) => (
                                     <TableRow key={type.id}>
                                         <TableCell component="th" scope="row" >{index + 1}</TableCell>
                                         <TableCell component="th" scope="row" >{type.nameType}</TableCell>
@@ -277,17 +343,17 @@ const PetPage = () => {
                                     <TablePagination
                                         rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                                         colSpan={3}
-                                        count={1}
-                                        rowsPerPage={rowsPerPage}
-                                        page={page}
+                                        count={types.length}
+                                        rowsPerPage={rowsPerPageTypePet}
+                                        page={pageTypePet}
                                         SelectProps={{
                                             inputProps: {
                                                 'aria-label': 'rows per page',
                                             },
                                             native: true,
                                         }}
-                                        onPageChange={handleChangePage}
-                                        onRowsPerPageChange={handleChangeRowsPerPage}
+                                        onPageChange={handleChangePageTypePet}
+                                        onRowsPerPageChange={handleChangeRowsPerPageTypePet}
                                     />
                                 </TableRow>
                             </TableFooter>
@@ -295,14 +361,16 @@ const PetPage = () => {
                     </TableContainer>
                 </Paper>
                 <ModalEditTypePet open={openModalTypeEdit} handleClose={() => setOpenModalTypeEdit(false)} handleReload={() => setReload(!reload)} type={type} setLoading={(value) => setLoading(value)} />
-                <ModalDeleteTypePet open={openModalTypeDelete} handleClose={() => setOpenModalTypeDelete(false)} title='Delete Type Pet!' content='Are you sure delete this type?' handleClick={deleteTypePet}/>
+                <ModalDeleteTypePet open={openModalTypeDelete} handleClose={() => setOpenModalTypeDelete(false)} title='Delete Type Pet!' content='Are you sure delete this type?' handleClick={deleteTypePet} />
             </Box>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={isLoading}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
+            <Dialog open={isLoading}>
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={isLoading}
+                >
+                    <CircularProgress color="inherit" />
+                </Backdrop>
+            </Dialog>
         </BaseScreen>
     );
 };

@@ -74,13 +74,15 @@ const ModalAddTypePet = ({ open, handleClose, setLoading, handleReload }) => {
             <Snackbar open={alert} autoHideDuration={6000} onClose={() => {
                 setAlert(false)
                 handleClose()
+                setNameType('')
             }}>
                 <Alert onClose={() => {
                     setAlert(false)
                     handleClose()
+                    setNameType('')
                 }}
                     severity="success" sx={{ width: '100%' }}>
-                    Add type pet success!
+                    Add type pet successful!
                 </Alert>
             </Snackbar>
         </div>

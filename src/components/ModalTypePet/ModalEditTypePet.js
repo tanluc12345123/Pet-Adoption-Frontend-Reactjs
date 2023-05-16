@@ -85,7 +85,7 @@ const ModalEditTypePet = ({ open, handleClose, setLoading, handleReload, type })
                     handleClose()
                 }}
                     severity="success" sx={{ width: '100%' }}>
-                    Edit type pet success!
+                    Edit type pet successful!
                 </Alert>
             </Snackbar>
         </div>

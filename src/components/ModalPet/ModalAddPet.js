@@ -7,13 +7,14 @@ import Modal from '../Modal/Modal';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import InputComponent from '../InputComponent/InputComponent';
-import { InputBase, FormControl, Select, MenuItem, InputAdornment, OutlinedInput, Stack, Box, Grid } from "@mui/material";
+import { InputBase, FormControl, Select, MenuItem, InputAdornment, OutlinedInput, Stack, Box, Snackbar, Alert } from "@mui/material";
 import { useState } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import StyledTextarea from '../InputComponent/TextAreaComponet';
 import ImageComponent from '../ImageComponent/ImageComponent';
+import Api from '../../api/Api';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -58,21 +59,23 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const ModalAddPet = ({ open, handleClose }) => {
+const ModalAddPet = ({ open, handleClose, types, setLoading, handleReload }) => {
     const [name, setName] = useState('')
-    const [type, setType] = useState(1)
+    const [type, setType] = useState(null)
     const [gender, setGender] = useState(1)
     const [color, setColor] = useState('')
     const [breed, setBreed] = useState('')
     const [weight, setWeight] = useState(0)
     const [age, setAge] = useState(0)
     const [price, setPrice] = useState(0)
-    const [dateReceive, setDateReceive] = useState(null)
+    const [dateReceived, setDateReceived] = useState(null)
     const [description, setDescription] = useState(null)
-    const [image1, setImage1] = useState('')
-    const [image2, setImage2] = useState('')
-    const [image3, setImage3] = useState('')
-    const [image4, setImage4] = useState('')
+    const [image1, setImage1] = useState(null)
+    const [image2, setImage2] = useState(null)
+    const [image3, setImage3] = useState(null)
+    const [image4, setImage4] = useState(null)
+    const [error, setError] = useState(null)
+    const [alert, setAlert] = useState(false)
 
     const handleUploadImage = (value, type) => {
         switch (type) {
@@ -118,11 +121,51 @@ const ModalAddPet = ({ open, handleClose }) => {
                 setPrice(e.target.value)
                 break;
             case 'dateReceive':
-                setDateReceive(e)
+                setDateReceived(e)
                 break;
             case 'description':
                 setDescription(e.target.value)
                 break;
+        }
+    }
+
+    const addPet = async () => {
+        let formData = new FormData();
+        try {
+            setLoading(true)
+            const body = {
+                name: name,
+                gender: gender == 1 ? true : false,
+                breed: breed,
+                color: color,
+                age: age,
+                weight: weight,
+                price: price,
+                description: description,
+                dateReceived: dateReceived.$d,
+            }
+            const blob = new Blob([JSON.stringify(body)], {
+                type: 'application/json'
+            });
+
+            formData.append("body", blob)
+            formData.append("file1", image1)
+            formData.append("file2", image2)
+            formData.append("file3", image3)
+            formData.append("file4", image4)
+            const response = await Api.addPet(type, formData)
+            if (response.data.status === "Success") {
+                setAlert(true)
+                handleReload()
+            }
+            setLoading(false)
+        } catch (error) {
+            if (error?.response?.data?.status === "Failed") {
+                setError(error.response.data.message)
+            } else {
+                setError(error.message)
+            }
+            setLoading(false)
         }
     }
 
@@ -154,8 +197,9 @@ const ModalAddPet = ({ open, handleClose }) => {
                                     displayEmpty
                                     input={<BootstrapInput />}
                                 >
-                                    <MenuItem value={1}>Dog</MenuItem>
-                                    <MenuItem value={2}>Cat</MenuItem>
+                                    {types && types.map((value) => (
+                                        <MenuItem value={value.id}>{value.nameType}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                             <Typography gutterBottom>
@@ -214,7 +258,7 @@ const ModalAddPet = ({ open, handleClose }) => {
                                 Date received:
                             </Typography>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker sx={{ width: 320 }} slotProps={{ textField: { size: 'small' } }} onChange={(value) => handleChange(value, 'dateReceive')} value={dateReceive} />
+                                <DatePicker sx={{ width: 320 }} slotProps={{ textField: { size: 'small' } }} onChange={(value) => handleChange(value, 'dateReceive')} value={dateReceived} />
                             </LocalizationProvider>
                             <Typography gutterBottom>
                                 Description:
@@ -235,13 +279,25 @@ const ModalAddPet = ({ open, handleClose }) => {
                             </Stack>
                         </Box>
                     </Stack>
-
+                    {error && <span className='error'>{error}</span>}
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={handleClose}>
+                    <Button autoFocus onClick={addPet}>
                         Save changes
                     </Button>
                 </DialogActions>
+                <Snackbar open={alert} autoHideDuration={6000} onClose={() => {
+                    setAlert(false)
+                    handleClose()
+                }}>
+                    <Alert onClose={() => {
+                        setAlert(false)
+                        handleClose()
+                    }}
+                        severity="success" sx={{ width: '100%' }}>
+                        Add pet successful!
+                    </Alert>
+                </Snackbar>
             </BootstrapDialog>
         </div>
     );
