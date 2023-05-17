@@ -48,6 +48,15 @@ const Api = {
     deletePet: (idPet) => {
         return AxiosClient.put(Route.PET + '/' + idPet + Route.TRASH)
     },
+    getTypesSchedule: () => {
+        return AxiosClient.get(Route.PET_SCHEDULE + Route.TYPE_PET)
+    },
+    addSchedulePet: (idType, schedule) => {
+        return AxiosClient.post(Route.PET_SCHEDULE + Route.TYPE_PET + '/' + idType, schedule)
+    },
+    getScheduleByType: (idType) => {
+        return AxiosClient.get(Route.PET_SCHEDULE + '/' + idType)
+    }
 }
 
 export default Api
