@@ -9,7 +9,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path='/' element={<Login />} />
-        <Route path="/home" element={<MainLayout />}>
+        <Route path="/" element={<MainLayout />}>
           {routes}
         </Route>
       </Routes>

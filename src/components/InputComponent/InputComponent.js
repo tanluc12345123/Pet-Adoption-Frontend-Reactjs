@@ -3,7 +3,7 @@ import Input from '@mui/base/Input';
 import { styled } from '@mui/system';
 
 const InputComponent = React.forwardRef(function InputComponent(props, ref) {
-    return <Input slots={{ input: StyledInputElement }} {...props} ref={ref} />;
+  return <Input slots={{ input: StyledInputElement }} {...props} ref={ref} />;
 });
 
 export default InputComponent
