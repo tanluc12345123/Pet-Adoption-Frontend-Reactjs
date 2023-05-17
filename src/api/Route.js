@@ -6,4 +6,5 @@ export default {
     ADD_TYPE_PET: '/insert',
     NO_LOGIN: '/nologin',
     PET: '/pets',
+    TRASH: '/trash',
 };

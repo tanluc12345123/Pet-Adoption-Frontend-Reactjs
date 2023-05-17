@@ -11,7 +11,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const ModalDeleteTypePet = ({ open, handleClose, title, content, handleClick }) => {
+const ModalDelete = ({ open, handleClose, title, content, handleClick }) => {
     return (
         <Dialog
             open={open}
@@ -33,4 +33,4 @@ const ModalDeleteTypePet = ({ open, handleClose, title, content, handleClick }) 
     );
 };
 
-export default ModalDeleteTypePet;
+export default ModalDelete;

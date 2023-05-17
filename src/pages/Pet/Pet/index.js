@@ -12,9 +12,9 @@ import { useEffect } from 'react';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import ModalEditTypePet from '../../../components/ModalTypePet/ModalEditTypePet';
-import ModalDeleteTypePet from '../../../components/ModalTypePet/ModalDeleteTypePet';
+import ModalDelete from '../../../components/ModalTypePet/ModalDelete';
 import ModalEditPet from '../../../components/ModalPet/ModalEditPet';
-import Modal from '../../../components/Modal/Modal';
+import { useDispatch } from 'react-redux';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
@@ -115,6 +115,8 @@ const PetPage = () => {
     const [pet, setPet] = useState({});
     const [reload, setReload] = useState(false)
 
+    const [filterList, setFilterList] = useState([]);
+
     const title = "Add new pet";
 
     const handleChangePagePet = (event, newPage) => {
@@ -137,6 +139,14 @@ const PetPage = () => {
 
     const handleSearchResultChange = (event) => {
         setSearchResult(event.target.value)
+        const query = event.target.value;
+        var updatedList = [...pets];
+        if (query != "") {
+            updatedList = updatedList.filter((item) => {
+                return item.name.toLowerCase().includes(query.toLowerCase()) || item.nameType.toLowerCase().includes(query.toLowerCase()) || item.breed.toLowerCase().includes(query.toLowerCase());
+            });
+        }
+        setFilterList(updatedList);
     }
 
     const handleSelected = (e) => {
@@ -180,8 +190,25 @@ const PetPage = () => {
             const response = await Api.getPets()
             if (response.data.status === "Success") {
                 setPets(response.data.data)
+                setFilterList(response.data.data)
             }
             console.log(response.data)
+            setLoading(false)
+        } catch (error) {
+            setContent(error.message)
+            setOpen(true)
+            setLoading(false)
+        }
+    }
+
+    const deletePet = async () => {
+        try {
+            setLoading(true)
+            const response = await Api.deletePet(pet.id)
+            if (response.data.status === "Success") {
+                setOpenModalDelete(false)
+                setReload(!reload)
+            }
             setLoading(false)
         } catch (error) {
             setContent(error.message)
@@ -233,9 +260,9 @@ const PetPage = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {pets && (rowsPerPagePet > 0
-                                    ? pets.slice(pagePet * rowsPerPagePet, pagePet * rowsPerPagePet + rowsPerPagePet)
-                                    : pets
+                                {filterList && (rowsPerPagePet > 0
+                                    ? filterList.slice(pagePet * rowsPerPagePet, pagePet * rowsPerPagePet + rowsPerPagePet)
+                                    : filterList
                                 ).map((pet) => (
                                     <TableRow>
                                         <TableCell>{pet.name}</TableCell>
@@ -286,6 +313,7 @@ const PetPage = () => {
                     </TableContainer>
                 </Paper>
                 <ModalEditPet open={openModalEdit} handleClose={() => setOpenModalEdit(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} pet={pet} types={types} />
+                <ModalDelete open={openModalDelete} handleClose={() => setOpenModalDelete(false)} title='Delete Pet!' content='Are you sure delete this pet?' handleClick={deletePet} />
             </Box>
 
 
@@ -361,7 +389,7 @@ const PetPage = () => {
                     </TableContainer>
                 </Paper>
                 <ModalEditTypePet open={openModalTypeEdit} handleClose={() => setOpenModalTypeEdit(false)} handleReload={() => setReload(!reload)} type={type} setLoading={(value) => setLoading(value)} />
-                <ModalDeleteTypePet open={openModalTypeDelete} handleClose={() => setOpenModalTypeDelete(false)} title='Delete Type Pet!' content='Are you sure delete this type?' handleClick={deleteTypePet} />
+                <ModalDelete open={openModalTypeDelete} handleClose={() => setOpenModalTypeDelete(false)} title='Delete Type Pet!' content='Are you sure delete this type?' handleClick={deleteTypePet} />
             </Box>
             <Dialog open={isLoading}>
                 <Backdrop

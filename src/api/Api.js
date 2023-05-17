@@ -44,7 +44,10 @@ const Api = {
     },
     updatePet: (idPet, idType, pet) => {
         return AxiosClient.put(Route.PET + '/' + idPet + Route.TYPE_PET + '/' + idType, pet, config)
-    }
+    },
+    deletePet: (idPet) => {
+        return AxiosClient.put(Route.PET + '/' + idPet + Route.TRASH)
+    },
 }
 
 export default Api
