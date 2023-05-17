@@ -7,6 +7,7 @@ import Api from '../../../api/Api';
 import { styled } from '@mui/material/styles';
 import ModalAdd from '../../../components/ModalSchedule/ModalAdd';
 import ReactMarkdown from 'react-markdown'
+import { useEffect } from 'react';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
@@ -76,7 +77,7 @@ const PetSchedulePage = () => {
             if (type != null) {
                 const response = await Api.getScheduleByType(type)
                 if (response.data.status === "Success") {
-                    setDescription(response.data.data.description)
+                    setDescription(response.data.data?.description)
                 }
             }
             setLoading(false)
@@ -87,15 +88,11 @@ const PetSchedulePage = () => {
         }
     }
 
-    const handleSelectedType = (e) => {
-        setType(e.target.value)
-    }
-
-    useState(() => {
+    useEffect(() => {
         fetchTypesPet()
     }, [reload])
 
-    useState(() => {
+    useEffect(() => {
         fetchSchedulePet()
     }, [type])
 
@@ -116,7 +113,7 @@ const PetSchedulePage = () => {
                         <Select
                             value={type}
                             displayEmpty
-                            onChange={handleSelectedType}
+                            onChange={(e) => setType(e.target.value)}
                             input={<BootstrapInput />}
                         >
                             {types && types.map((value) => (
