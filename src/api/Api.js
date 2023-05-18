@@ -39,7 +39,6 @@ const Api = {
         return AxiosClient.get(Route.NO_LOGIN + Route.PET + '?trash=false')
     },
     addPet: (idType, pet) => {
-
         return AxiosClient.post(Route.PET + Route.TYPE_PET + '/' + idType, pet, config)
     },
     updatePet: (idPet, idType, pet) => {
@@ -59,6 +58,18 @@ const Api = {
     },
     updateSchedule: (idSchedule, schedule) => {
         return AxiosClient.put(Route.PET_SCHEDULE + '/' + idSchedule, schedule)
+    },
+    getServices: () => {
+        return AxiosClient.get(Route.NO_LOGIN + Route.SERVICES)
+    },
+    addService: (service) => {
+        return AxiosClient.post(Route.SERVICES + Route.ADD_SERVICE, service, config)
+    },
+    updateService: (id, service) => {
+        return AxiosClient.put(Route.SERVICES + '/' + id, service, config)
+    },
+    deleteService: (id) => {
+        return AxiosClient.put(Route.SERVICES + '/' + id + Route.TRASH)
     }
 }
 
