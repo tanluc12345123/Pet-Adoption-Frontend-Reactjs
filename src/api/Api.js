@@ -56,6 +56,9 @@ const Api = {
     },
     getScheduleByType: (idType) => {
         return AxiosClient.get(Route.PET_SCHEDULE + '/' + idType)
+    },
+    updateSchedule: (idSchedule, schedule) => {
+        return AxiosClient.put(Route.PET_SCHEDULE + '/' + idSchedule, schedule)
     }
 }
 

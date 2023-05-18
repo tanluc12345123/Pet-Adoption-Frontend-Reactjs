@@ -8,6 +8,7 @@ import { styled } from '@mui/material/styles';
 import ModalAdd from '../../../components/ModalSchedule/ModalAdd';
 import ReactMarkdown from 'react-markdown'
 import { useEffect } from 'react';
+import ModalEdit from '../../../components/ModalSchedule/ModalEdit';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
@@ -48,11 +49,13 @@ const PetSchedulePage = () => {
     const [open, setOpen] = useState(false)
     const [content, setContent] = useState('');
     const [description, setDescription] = useState(null);
+    const [schedule, setSchedule] = useState({});
     const title = "Add new schedule";
 
     const [types, setTypes] = useState([]);
     const [type, setType] = useState(null);
     const [openModalAdd, setOpenModalAdd] = useState(false);
+    const [openModalEdit, setOpenModalEdit] = useState(false);
     const [reload, setReload] = useState(false);
 
     const fetchTypesPet = async () => {
@@ -77,6 +80,7 @@ const PetSchedulePage = () => {
             if (type != null) {
                 const response = await Api.getScheduleByType(type)
                 if (response.data.status === "Success") {
+                    setSchedule(response.data.data)
                     setDescription(response.data.data?.description)
                 }
             }
@@ -94,7 +98,7 @@ const PetSchedulePage = () => {
 
     useEffect(() => {
         fetchSchedulePet()
-    }, [type])
+    }, [type, reload])
 
     return (
         <BaseScreen isLoading={isLoading} title={title} handleClose={() => setOpen(false)} open={open} content={content}>
@@ -122,8 +126,8 @@ const PetSchedulePage = () => {
                         </Select>
                     </FormControl>
                     <Box sx={{ marginBottom: 2, display: 'flex', marginLeft: 'auto' }}>
-                        <Button style={{ padding: 14 }} onClick={() => setOpenModalAdd(true)}>Schedule Adjustment</Button>
-                        {/* <ModalAdd open={openModalAdd} handleClose={() => setOpenModalAdd(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} /> */}
+                        <Button style={{ padding: 14 }} onClick={() => setOpenModalEdit(true)}>Schedule Adjustment</Button>
+                        <ModalEdit open={openModalEdit} handleClose={() => setOpenModalEdit(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} types={types} schedule={schedule} typeSchedule={type} />
                     </Box>
                 </Box>
                 <Box>
