@@ -1,13 +1,13 @@
-import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
-import AppsOutlinedIcon from '@mui/icons-material/AppsOutlined';
-import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
-import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import PetsIcon from '@mui/icons-material/Pets';
 import PersonIcon from '@mui/icons-material/Person';
+import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import Home from '../pages/Home/index';
 import PetPageLayout from '../pages/Pet/PetPageLayout';
 import PetSchedulePage from '../pages/Pet/PetSchedule/index';
 import PetPage from '../pages/Pet/Pet/index';
+import ServicePageLayout from '../pages/Services/ServicePageLayout';
+import ServicePage from '../pages/Services/Service/index';
+import OrderServicePage from '../pages/Services/OrderService/index';
 
 const appRoutes = [
     {
@@ -25,7 +25,7 @@ const appRoutes = [
         state: "pet",
         sidebarProps: {
             displayText: "Pet",
-            icon: <DashboardOutlinedIcon />
+            icon: <PetsIcon />
         },
         child: [
             {
@@ -46,51 +46,33 @@ const appRoutes = [
             },
         ]
     },
-    // {
-    //     path: "/component",
-    //     element: <ComponentPageLayout />,
-    //     state: "component",
-    //     sidebarProps: {
-    //         displayText: "Components",
-    //         icon: <AppsOutlinedIcon />
-    //     },
-    //     child: [
-    //         {
-    //             path: "/component/alert",
-    //             element: <AlertPage />,
-    //             state: "component.alert",
-    //             sidebarProps: {
-    //                 displayText: "Alert"
-    //             },
-    //         },
-    //         {
-    //             path: "/component/button",
-    //             element: <ButtonPage />,
-    //             state: "component.button",
-    //             sidebarProps: {
-    //                 displayText: "Button"
-    //             }
-    //         }
-    //     ]
-    // },
-    // {
-    //     path: "/documentation",
-    //     element: <DocumentationPage />,
-    //     state: "documentation",
-    //     sidebarProps: {
-    //         displayText: "Documentation",
-    //         icon: <ArticleOutlinedIcon />
-    //     }
-    // },
-    // {
-    //     path: "/changelog",
-    //     element: <ChangelogPage />,
-    //     state: "changelog",
-    //     sidebarProps: {
-    //         displayText: "Changelog",
-    //         icon: <FormatListBulletedOutlinedIcon />
-    //     }
-    // }
+    {
+        path: "/service",
+        element: <ServicePageLayout />,
+        state: "service",
+        sidebarProps: {
+            displayText: "Service",
+            icon: <DesignServicesIcon />
+        },
+        child: [
+            {
+                path: "/service/index",
+                element: <ServicePage />,
+                state: "service.index",
+                sidebarProps: {
+                    displayText: "Service"
+                },
+            },
+            {
+                path: "/service/ordered",
+                element: <OrderServicePage />,
+                state: "service.ordered",
+                sidebarProps: {
+                    displayText: "Ordered Service"
+                },
+            },
+        ]
+    },
 ];
 
 export default appRoutes;

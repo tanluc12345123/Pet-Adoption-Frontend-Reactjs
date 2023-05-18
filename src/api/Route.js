@@ -7,5 +7,8 @@ export default {
     NO_LOGIN: '/nologin',
     PET: '/pets',
     TRASH: '/trash',
+    RESTORE: '/restore',
     PET_SCHEDULE: '/petSchedule',
+    SERVICES: '/services',
+    ADD_SERVICE: '/insert',
 };
