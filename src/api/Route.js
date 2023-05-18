@@ -7,4 +7,5 @@ export default {
     NO_LOGIN: '/nologin',
     PET: '/pets',
     TRASH: '/trash',
+    PET_SCHEDULE: '/petSchedule',
 };

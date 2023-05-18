@@ -14,7 +14,6 @@ import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import ModalEditTypePet from '../../../components/ModalTypePet/ModalEditTypePet';
 import ModalDelete from '../../../components/ModalTypePet/ModalDelete';
 import ModalEditPet from '../../../components/ModalPet/ModalEditPet';
-import { useDispatch } from 'react-redux';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
