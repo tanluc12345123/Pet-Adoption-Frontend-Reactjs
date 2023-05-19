@@ -1,6 +1,6 @@
 export default {
     LOGIN: '/auth/signin',
-    USER:'/users',
+    USERS:'/users',
     CHANGE_PASSWORD: '/changePass',
     TYPE_PET: '/types',
     ADD_TYPE_PET: '/insert',
@@ -10,5 +10,11 @@ export default {
     RESTORE: '/restore',
     PET_SCHEDULE: '/petSchedule',
     SERVICES: '/services',
+    SERVICE: '/service',
     ADD_SERVICE: '/insert',
+    REGISTERED: '/registered',
+    BOOKING_SERVICE: '/bookingService',
+    APPROVE: '/approve',
+    COMPLETE: '/complete',
+    CANCEL: '/cancel',
 };

@@ -72,6 +72,7 @@ const ModalEditPet = ({ open, handleClose, setLoading, handleReload, types, pet 
     const [dateReceived, setDateReceived] = useState(dayjs(pet.dateReceived))
     const [sterilization, setSterilization] = useState(pet.sterilization)
     const [rabiesVaccination, setRabiesVaccination] = useState(pet.rabiesVaccination)
+    const [eTypeOwnership, setETypeOwnership] = useState(null)
     const [vaccination, setVaccination] = useState(pet.vaccination)
     const [safe, setSafe] = useState(pet.safe)
     const [description, setDescription] = useState(pet.description)
@@ -169,6 +170,7 @@ const ModalEditPet = ({ open, handleClose, setLoading, handleReload, types, pet 
                 price: price,
                 description: description,
                 dateReceived: dateReceived.$d,
+                eTypeOwnership: eTypeOwnership,
                 status: {
                     sterilization: sterilization ? 1 : 0,
                     rabiesVaccination: rabiesVaccination ? 1 : 0,
@@ -217,6 +219,7 @@ const ModalEditPet = ({ open, handleClose, setLoading, handleReload, types, pet 
         setSterilization(pet?.status?.sterilization)
         setVaccination(pet?.status?.vaccination)
         setSafe(pet?.status?.safe)
+        setETypeOwnership(pet?.eTypeOwnership)
         setImage1(pet?.petImage?.image1)
         setImage2(pet?.petImage?.image2)
         setImage3(pet?.petImage?.image3)
@@ -246,7 +249,7 @@ const ModalEditPet = ({ open, handleClose, setLoading, handleReload, types, pet 
                             </Typography>
                             <FormControl sx={{ minWidth: 120, borderRadius: 2 }} size="small">
                                 <Select
-                                    value={type}
+                                    value={type ? type : pet.typeId}
                                     onChange={(value) => handleChange(value, 'type')}
                                     displayEmpty
                                     input={<BootstrapInput />}
