@@ -44,7 +44,7 @@ const ImageComponent = ({ image, onHandleUploadImage }) => {
                 }}>
                 {image && <Avatar sx={{ width: '100%', height: '100%', backgroundColor: 'white', borderRadius: 3, }} variant="square" src={isValidUrl(image) ? image : isImage(image)}></Avatar>}
                 {!image && <AddIcon sx={{ width: '100%', height: '100%' }} />}
-                <Input type='file' accept="image/*" sx={{ display: 'none' }} onChange={handlePreviewImage} enctype="multipart/form-data" />
+                <Input type='file' accept="image/*" sx={{ display: 'none' }} onChange={handlePreviewImage} enctype="multipart/form-data"/>
             </Box>
         </label>
     );

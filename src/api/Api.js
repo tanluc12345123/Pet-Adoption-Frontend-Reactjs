@@ -13,7 +13,7 @@ const Api = {
         })
     },
     changePassword: (userId, oldPassword, newPassword, confirmPassword) => {
-        return AxiosClient.put(Route.USER + '/' + userId + Route.CHANGE_PASSWORD, {
+        return AxiosClient.put(Route.USERS + '/' + userId + Route.CHANGE_PASSWORD, {
             oldPassword: oldPassword,
             newPassword: newPassword,
             confirmPassword: confirmPassword
@@ -70,7 +70,19 @@ const Api = {
     },
     deleteService: (id) => {
         return AxiosClient.put(Route.SERVICES + '/' + id + Route.TRASH)
-    }
+    },
+    getOrderedService: () => {
+        return AxiosClient.get(Route.USERS + Route.SERVICE + Route.REGISTERED)
+    },
+    approveOrderedService: (id) => {
+        return AxiosClient.put(Route.USERS + Route.BOOKING_SERVICE + '/' + id + Route.APPROVE)
+    },
+    completeOrderedService: (id) => {
+        return AxiosClient.put(Route.USERS + Route.BOOKING_SERVICE + '/' + id + Route.COMPLETE)
+    },
+    cancelOrderedService: (id) => {
+        return AxiosClient.put(Route.USERS + Route.BOOKING_SERVICE + '/' + id + Route.CANCEL)
+    },
 }
 
 export default Api

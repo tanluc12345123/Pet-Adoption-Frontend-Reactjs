@@ -70,6 +70,7 @@ const ModalAddPet = ({ open, handleClose, types, setLoading, handleReload }) => 
     const [price, setPrice] = useState(0)
     const [dateReceived, setDateReceived] = useState(null)
     const [description, setDescription] = useState(null)
+    const [eTypeOwnership, setETypeOwnership] = useState("ADMIN")
     const [image1, setImage1] = useState(null)
     const [image2, setImage2] = useState(null)
     const [image3, setImage3] = useState(null)
@@ -143,6 +144,7 @@ const ModalAddPet = ({ open, handleClose, types, setLoading, handleReload }) => 
                 price: price,
                 description: description,
                 dateReceived: dateReceived.$d,
+                eTypeOwnership: eTypeOwnership,
             }
             const blob = new Blob([JSON.stringify(body)], {
                 type: 'application/json'

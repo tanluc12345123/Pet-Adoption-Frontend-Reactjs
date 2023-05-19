@@ -158,7 +158,7 @@ const ModalAdd = ({ open, handleClose, setLoading, handleReload, types }) => {
                             displayEmpty
                             input={<BootstrapInput />}
                         >
-                            {types && types.map((value) => (
+                            {typesPet && typesPet.map((value) => (
                                 <MenuItem value={value.id}>{value.nameType}</MenuItem>
                             ))}
                         </Select>
