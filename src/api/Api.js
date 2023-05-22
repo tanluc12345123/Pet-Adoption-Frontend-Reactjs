@@ -95,6 +95,18 @@ const Api = {
     deleteVeterinarian: (id) => {
         return AxiosClient.put(Route.VETERINARIANS + '/' + id + Route.TRASH)
     },
+    getOrderedVeterinarians: () => {
+        return AxiosClient.get(Route.USERS + Route.VETERINARIANS + Route.REGISTERED)
+    },
+    approveOrderedVeterinarian: (id) => {
+        return AxiosClient.put(Route.USERS + Route.BOOKING_VETERINARIAN + '/' + id + Route.APPROVE)
+    },
+    completeOrderedVeterinarian: (id) => {
+        return AxiosClient.put(Route.USERS + Route.BOOKING_VETERINARIAN + '/' + id + Route.COMPLETE)
+    },
+    cancelOrderedVeterinarian: (id) => {
+        return AxiosClient.put(Route.USERS + Route.BOOKING_VETERINARIAN + '/' + id + Route.CANCEL)
+    },
 }
 
 export default Api

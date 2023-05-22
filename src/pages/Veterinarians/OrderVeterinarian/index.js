@@ -54,28 +54,20 @@ const headerCell = [
         label: 'Name user',
     },
     {
+        id: 'phone',
+        label: 'Phone number',
+    },
+    {
         id: 'date visit',
         label: 'Date visit',
     },
     {
-        id: 'time visit',
-        label: 'Time visit',
-    },
-    {
-        id: 'date of receipt',
-        label: 'Date of receipt',
-    },
-    {
-        id: 'time of receipt',
-        label: 'Time of receipt',
+        id: 'date of end',
+        label: 'Date end',
     },
     {
         id: 'total price',
         label: 'Total Price',
-    },
-    {
-        id: 'name service',
-        label: 'Name Service',
     },
     {
         id: 'status',
@@ -98,10 +90,9 @@ const OrderVeterinarianPage = () => {
     const [open, setOpen] = useState(false)
     const [content, setContent] = useState('');
     const [reload, setReload] = useState(false);
-    const [orderedServices, setOrderedServices] = useState([]);
-    const [orderedService, setOrderedService] = useState({});
+    const [orderedVeterinarians, setOrderedVeterinarians] = useState([]);
+    const [orderedVeterinarian, setOrderedVeterinarian] = useState({});
     const [status, setStatus] = useState("DOING");
-    const [types, setTypes] = useState([]);
 
     const [openModalDetail, setOpenModalDetail] = useState(false)
     const [openModalApprove, setOpenModalApprove] = useState(false)
@@ -132,18 +123,18 @@ const OrderVeterinarianPage = () => {
         var updatedList = [...orderListByStatus];
         if (query != "") {
             updatedList = updatedList.filter((item) => {
-                return item.name?.toLowerCase().includes(query.toLowerCase()) || item.service.name.toLowerCase().includes(query.toLowerCase());
+                return item.user?.fullName?.toLowerCase().includes(query.toLowerCase()) || item.user?.phoneNumber?.toLowerCase().includes(query.toLowerCase());
             });
         }
         setFilterList(updatedList);
     }
 
-    const fetchOrderedServices = async () => {
+    const fetchOrderedVeterinarians = async () => {
         try {
             setLoading(true)
-            const response = await Api.getOrderedService()
+            const response = await Api.getOrderedVeterinarians()
             if (response.data.status === "Success") {
-                setOrderedServices(response.data.data)
+                setOrderedVeterinarians(response.data.data)
                 setFilterList(response.data.data.filter((item) => {
                     return item.status === status
                 }))
@@ -160,39 +151,24 @@ const OrderVeterinarianPage = () => {
         }
     }
 
-    const fetchTypesPet = async () => {
-        try {
-            setLoading(true)
-            const response = await Api.getTypesPet()
-            if (response.data.status === "Success") {
-                setTypes(response.data.data)
-            }
-            setLoading(false)
-        } catch (error) {
-            setContent(error.message)
-            setOpen(true)
-            setLoading(false)
-        }
-    }
-
     const handleSelected = (e) => {
         setStatus(e.target.value)
-        setOrderListByStatus(orderedServices.filter((item) => {
+        setOrderListByStatus(orderedVeterinarians.filter((item) => {
             return item.status === e.target.value
         }))
-        setFilterList(orderedServices.filter((item) => {
+        setFilterList(orderedVeterinarians.filter((item) => {
             return item.status === e.target.value
         }))
     }
 
-    const completeOrderedService = async () => {
+    const completeOrderedVeterinarian = async () => {
         try {
             setLoading(true)
-            const response = await Api.completeOrderedService(orderedService.id)
+            const response = await Api.completeOrderedVeterinarian(orderedVeterinarian.id)
             if (response.data.status === "Success") {
                 setOpenModalApprove(false)
                 setAlert(true)
-                setMessage('Complete ordered service successful!')
+                setMessage('Complete ordered veterinarian successful!')
                 setReload(!reload)
             }
             setLoading(false)
@@ -203,14 +179,14 @@ const OrderVeterinarianPage = () => {
         }
     }
 
-    const cancelOrderedService = async () => {
+    const cancelOrderedVeterinarian = async () => {
         try {
             setLoading(true)
-            const response = await Api.cancelOrderedService(orderedService.id)
+            const response = await Api.cancelOrderedVeterinarian(orderedVeterinarian.id)
             if (response.data.status === "Success") {
                 setOpenModalDeny(false)
                 setAlert(true)
-                setMessage('Cancel ordered service successful!')
+                setMessage('Cancel ordered veterinarians successful!')
                 setReload(!reload)
             }
             setLoading(false)
@@ -222,8 +198,7 @@ const OrderVeterinarianPage = () => {
     }
 
     useEffect(() => {
-        fetchOrderedServices()
-        fetchTypesPet()
+        fetchOrderedVeterinarians()
     }, [reload])
 
     return (
@@ -277,12 +252,10 @@ const OrderVeterinarianPage = () => {
                                         }}>
                                         {order.user.fullName}
                                     </Typography></TableCell>
+                                    <TableCell>{order.user.phoneNumber}</TableCell>
                                     <TableCell>{order.dateStart}</TableCell>
-                                    <TableCell>{order.visitingTimeStart}</TableCell>
                                     <TableCell>{order.dateEnd}</TableCell>
-                                    <TableCell>{order.visitingTimeEnd}</TableCell>
                                     <TableCell>{order.totalPrice.toLocaleString('en-US')}$</TableCell>
-                                    <TableCell>{order.service.name}</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold' }}>{order.status}</TableCell>
                                     <TableCell>{order.payment ? 'Done' : 'None'}</TableCell>
                                     <TableCell>
@@ -290,33 +263,36 @@ const OrderVeterinarianPage = () => {
                                             <Button title='Detail' variant="contained" style={{ marginRight: 10 }}
                                                 onClick={() => {
                                                     setOpenModalDetail(true)
-                                                    setOrderedService(order)
+                                                    setOrderedVeterinarian(order)
                                                 }}
                                             ><TocIcon /></Button>
                                             <Button variant="contained" style={{ marginRight: 10, backgroundColor: 'green' }}
                                                 onClick={() => {
                                                     setOpenModalApprove(true)
-                                                    setOrderedService(order)
+                                                    setOrderedVeterinarian(order)
                                                 }}
+                                                disabled={status === "DONE"}
                                             ><TaskAltOutlinedIcon /></Button>
                                             <Button variant="contained" style={{ backgroundColor: 'red' }} onClick={() => {
                                                 setOpenModalDeny(true)
-                                                setOrderedService(order)
-                                            }}><DoDisturbOnOutlinedIcon /></Button>
+                                                setOrderedVeterinarian(order)
+                                                }}
+                                                disabled={status === "CANCEL"}
+                                            ><DoDisturbOnOutlinedIcon /></Button>
                                         </Box>
                                     </TableCell>
                                 </TableRow>
                             ))}
-                            <ModalDetail open={openModalDetail} handleClose={() => setOpenModalDetail(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} orderedService={orderedService} types={types} />
-                            <ModalDelete open={openModalApprove} handleClose={() => setOpenModalApprove(false)} title='Approve order!' content='Are you sure approve this order?' handleClick={completeOrderedService} />
-                            <ModalDelete open={openModalDeny} handleClose={() => setOpenModalDeny(false)} title='Deny Service!' content='Are you sure deny this order?' handleClick={cancelOrderedService} />
+                            <ModalDetail open={openModalDetail} handleClose={() => setOpenModalDetail(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} orderedVeterinarian={orderedVeterinarian} />
+                            <ModalDelete open={openModalApprove} handleClose={() => setOpenModalApprove(false)} title='Approve order!' content='Are you sure approve this order?' handleClick={completeOrderedVeterinarian} />
+                            <ModalDelete open={openModalDeny} handleClose={() => setOpenModalDeny(false)} title='Deny order!' content='Are you sure deny this order?' handleClick={cancelOrderedVeterinarian} />
                         </TableBody>
                         <TableFooter>
                             <TableRow>
                                 <TablePagination
                                     rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                                     colSpan={11}
-                                    count={orderedServices.length}
+                                    count={orderedVeterinarians.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     SelectProps={{
