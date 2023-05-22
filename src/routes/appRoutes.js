@@ -8,6 +8,10 @@ import PetPage from '../pages/Pet/Pet/index';
 import ServicePageLayout from '../pages/Services/ServicePageLayout';
 import ServicePage from '../pages/Services/Service/index';
 import OrderServicePage from '../pages/Services/OrderService/index';
+import VeterinarianPageLayout from '../pages/Veterinarians/VeterinarianPageLayout';
+import VeterinarianPage from '../pages/Veterinarians/Veterinarian/index';
+import OrderVeterinarianPage from '../pages/Veterinarians/OrderVeterinarian/index';
+import VaccinesOutlinedIcon from '@mui/icons-material/VaccinesOutlined';
 
 const appRoutes = [
     {
@@ -69,6 +73,33 @@ const appRoutes = [
                 state: "service.ordered",
                 sidebarProps: {
                     displayText: "Ordered Service"
+                },
+            },
+        ]
+    },
+    {
+        path: "/veterinarian",
+        element: <VeterinarianPageLayout />,
+        state: "veterinarian",
+        sidebarProps: {
+            displayText: "Veterinarian",
+            icon: <VaccinesOutlinedIcon />
+        },
+        child: [
+            {
+                path: "/veterinarian/index",
+                element: <VeterinarianPage />,
+                state: "veterinarian.index",
+                sidebarProps: {
+                    displayText: "Veterinarian"
+                },
+            },
+            {
+                path: "/veterinarian/ordered",
+                element: <OrderVeterinarianPage />,
+                state: "veterinarian.ordered",
+                sidebarProps: {
+                    displayText: "Ordered Veterinarian"
                 },
             },
         ]
