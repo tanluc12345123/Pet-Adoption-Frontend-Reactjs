@@ -93,13 +93,13 @@ const headerCell = [
 ]
 
 const OrderServicePage = () => {
-    const title = "Ordered Service";
+    const title = "Ordered Veterinarian";
     const [isLoading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [content, setContent] = useState('');
     const [reload, setReload] = useState(false);
-    const [orderedServices, setOrderedServices] = useState([]);
-    const [orderedService, setOrderedService] = useState({});
+    const [orderedVeterinarians, setOrderedVeterinarians] = useState([]);
+    const [orderedVeterinarian, setOrderedVeterinarian] = useState({});
     const [status, setStatus] = useState("DOING");
     const [types, setTypes] = useState([]);
 
@@ -132,7 +132,7 @@ const OrderServicePage = () => {
         var updatedList = [...orderListByStatus];
         if (query != "") {
             updatedList = updatedList.filter((item) => {
-                return item.name?.toLowerCase().includes(query.toLowerCase()) || item.service.name.toLowerCase().includes(query.toLowerCase());
+                return item.user?.fullName?.toLowerCase().includes(query.toLowerCase()) || item.service.name.toLowerCase().includes(query.toLowerCase());
             });
         }
         setFilterList(updatedList);
@@ -143,7 +143,7 @@ const OrderServicePage = () => {
             setLoading(true)
             const response = await Api.getOrderedService()
             if (response.data.status === "Success") {
-                setOrderedServices(response.data.data)
+                setOrderedVeterinarians(response.data.data)
                 setFilterList(response.data.data.filter((item) => {
                     return item.status === status
                 }))
@@ -177,10 +177,10 @@ const OrderServicePage = () => {
 
     const handleSelected = (e) => {
         setStatus(e.target.value)
-        setOrderListByStatus(orderedServices.filter((item) => {
+        setOrderListByStatus(orderedVeterinarians.filter((item) => {
             return item.status === e.target.value
         }))
-        setFilterList(orderedServices.filter((item) => {
+        setFilterList(orderedVeterinarians.filter((item) => {
             return item.status === e.target.value
         }))
     }
@@ -188,7 +188,7 @@ const OrderServicePage = () => {
     const completeOrderedService = async () => {
         try {
             setLoading(true)
-            const response = await Api.completeOrderedService(orderedService.id)
+            const response = await Api.completeOrderedService(orderedVeterinarian.id)
             if (response.data.status === "Success") {
                 setOpenModalApprove(false)
                 setAlert(true)
@@ -206,7 +206,7 @@ const OrderServicePage = () => {
     const cancelOrderedService = async () => {
         try {
             setLoading(true)
-            const response = await Api.cancelOrderedService(orderedService.id)
+            const response = await Api.cancelOrderedService(orderedVeterinarian.id)
             if (response.data.status === "Success") {
                 setOpenModalDeny(false)
                 setAlert(true)
@@ -290,24 +290,26 @@ const OrderServicePage = () => {
                                             <Button title='Detail' variant="contained" style={{ marginRight: 10 }}
                                                 onClick={() => {
                                                     setOpenModalDetail(true)
-                                                    setOrderedService(order)
+                                                    setOrderedVeterinarian(order)
                                                 }}
                                             ><TocIcon /></Button>
                                             <Button variant="contained" style={{ marginRight: 10, backgroundColor: 'green' }}
                                                 onClick={() => {
                                                     setOpenModalApprove(true)
-                                                    setOrderedService(order)
+                                                    setOrderedVeterinarian(order)
                                                 }}
+                                                disabled={status === "DONE"}
                                             ><TaskAltOutlinedIcon /></Button>
                                             <Button variant="contained" style={{ backgroundColor: 'red' }} onClick={() => {
                                                 setOpenModalDeny(true)
-                                                setOrderedService(order)
-                                            }}><DoDisturbOnOutlinedIcon /></Button>
+                                                setOrderedVeterinarian(order)
+                                            }}
+                                                disabled={status === "CANCEL"}><DoDisturbOnOutlinedIcon /></Button>
                                         </Box>
                                     </TableCell>
                                 </TableRow>
                             ))}
-                            <ModalDetail open={openModalDetail} handleClose={() => setOpenModalDetail(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} orderedService={orderedService} types={types} />
+                            <ModalDetail open={openModalDetail} handleClose={() => setOpenModalDetail(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} orderedService={orderedVeterinarian} types={types} />
                             <ModalDelete open={openModalApprove} handleClose={() => setOpenModalApprove(false)} title='Approve order!' content='Are you sure approve this order?' handleClick={completeOrderedService} />
                             <ModalDelete open={openModalDeny} handleClose={() => setOpenModalDeny(false)} title='Deny Service!' content='Are you sure deny this order?' handleClick={cancelOrderedService} />
                         </TableBody>
@@ -316,7 +318,7 @@ const OrderServicePage = () => {
                                 <TablePagination
                                     rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                                     colSpan={11}
-                                    count={orderedServices.length}
+                                    count={orderedVeterinarians.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     SelectProps={{

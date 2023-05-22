@@ -62,7 +62,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const ModalDetail = ({ open, handleClose, types, setLoading, handleReload, orderedService }) => {
+const ModalDetail = ({ open, handleClose, setLoading, handleReload, orderedVeterinarian }) => {
     const [alert, setAlert] = useState(false)
     const [status, setStatus] = useState('')
     const [error, setError] = useState(null)
@@ -73,13 +73,13 @@ const ModalDetail = ({ open, handleClose, types, setLoading, handleReload, order
             var response = {};
             switch (status) {
                 case "DONE":
-                    response = await Api.completeOrderedService(orderedService.id)
+                    response = await Api.completeOrderedVeterinarian(orderedVeterinarian.id)
                     break;
                 case "CANCEL":
-                    response = await Api.cancelOrderedService(orderedService.id)
+                    response = await Api.cancelOrderedVeterinarian(orderedVeterinarian.id)
                     break;
                 default:
-                    response = await Api.approveOrderedService(orderedService.id)
+                    response = await Api.approveOrderedVeterinarian(orderedVeterinarian.id)
                     break;
             }
             if (response.data.status === "Success") {
@@ -99,8 +99,8 @@ const ModalDetail = ({ open, handleClose, types, setLoading, handleReload, order
     }
 
     useEffect(() => {
-        setStatus(orderedService?.status)
-    }, [orderedService])
+        setStatus(orderedVeterinarian?.status)
+    }, [orderedVeterinarian])
 
     return (
         <div>
@@ -111,166 +111,61 @@ const ModalDetail = ({ open, handleClose, types, setLoading, handleReload, order
                 maxWidth="false"
             >
                 <Modal id="customized-dialog-title" onClose={handleClose} sx={{ fontWeight: 'bold' }}>
-                    Detail ordered service
+                    Detail ordered Veterinarian
                 </Modal>
                 <DialogContent dividers>
-                    <Stack direction="row" spacing={3}>
+                    <Stack direction="row" spacing={2}>
                         <Box>
                             <Typography gutterBottom>
-                                Name pet:
+                                Name user:
                             </Typography>
-                            <InputComponent value={orderedService?.pet?.name} readOnly />
+                            <InputComponent value={orderedVeterinarian?.user?.fullName} readOnly />
                             <Typography gutterBottom>
-                                Type:
+                                Phone:
                             </Typography>
-                            <FormControl sx={{ minWidth: 120, borderRadius: 2 }} size="small">
-                                <Select
-                                    value={orderedService?.pet?.typeId}
-                                    displayEmpty
-                                    inputProps={{ readOnly: true }}
-                                    input={<BootstrapInput />}
-                                >
-                                    {types && types.map((value) => (
-                                        <MenuItem value={value.id}>{value.nameType}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
+                            <InputComponent value={orderedVeterinarian?.user?.phone} readOnly />
+                            <Typography gutterBottom>
+                                Address:
+                            </Typography>
+                            <InputComponent value={orderedVeterinarian?.user?.address} readOnly />
                             <Typography gutterBottom>
                                 Gender:
                             </Typography>
                             <FormControl sx={{ minWidth: 120, borderRadius: 2 }} size="small">
                                 <Select
-                                    value={orderedService?.pet?.gender ? 1 : 0}
+                                    value={orderedVeterinarian?.user?.gender ? 1 : 0}
                                     displayEmpty
-                                    inputProps={{ readOnly: true }}
+                                    readOnly
                                     input={<BootstrapInput />}
                                 >
                                     <MenuItem value={1}>Male</MenuItem>
                                     <MenuItem value={0}>Female</MenuItem>
                                 </Select>
                             </FormControl>
-                            <Typography gutterBottom>
-                                Breed:
-                            </Typography>
-                            <InputComponent value={orderedService?.pet?.breed} readOnly />
-                            <Typography gutterBottom>
-                                Age:
-                            </Typography>
-                            <InputComponent type='number' value={orderedService?.pet?.age} readOnly />
-                            <Typography gutterBottom>
-                                Description:
-                            </Typography>
-                            <StyledTextarea minRows={3} maxRows={4} value={orderedService?.pet?.description} readOnly />
-                            <Typography gutterBottom>
-                                Image:
-                            </Typography>
-                            <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
-                                <Stack direction="column" spacing={{ xs: 2 }}>
-                                    <ImageComponent image={orderedService?.pet?.image1} />
-                                    <ImageComponent image={orderedService?.pet?.image2} />
-                                </Stack>
-                                <Stack direction="column" spacing={{ xs: 2 }}>
-                                    <ImageComponent image={orderedService?.pet?.image3} />
-                                    <ImageComponent image={orderedService?.pet?.image4} />
-                                </Stack>
-                            </Stack>
-                        </Box>
-
-                        <Box>
-                            <Typography gutterBottom>
-                                Name service:
-                            </Typography>
-                            <InputComponent value={orderedService?.service?.name} readOnly />
-                            <Typography gutterBottom>
-                                Price:
-                            </Typography>
-                            <OutlinedInput
-                                sx={{ borderRadius: 3, borderColor: '#ced4da', paddingY: 0.5, width: 320 }}
-                                size='small'
-                                type='number'
-                                readOnly
-                                value={orderedService?.service?.price}
-                                inputMode={<BootstrapInput />}
-                                endAdornment={<InputAdornment position="end">$</InputAdornment>}
-                            />
-                            <Typography gutterBottom>
-                                Description:
-                            </Typography>
-                            <StyledTextarea readOnly minRows={4} maxRows={4} value={orderedService?.service?.description} />
-                            <Typography gutterBottom>
-                                Type service:
-                            </Typography>
-                            <FormControl sx={{ minWidth: 120, borderRadius: 2 }} size="small">
-                                <Select
-                                    value={orderedService?.service?.typeService}
-                                    displayEmpty
-                                    readOnly
-                                    input={<BootstrapInput />}
-                                >
-                                    <MenuItem value="SERVICE_BY_DAY">Service by day</MenuItem>
-                                    <MenuItem value="SERVICE_NOT_BY_DAY">Service by time</MenuItem>
-                                </Select>
-                            </FormControl>
-                            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
-                                <ImageComponent image={orderedService?.service?.image} onHandleUploadImage={() => { }} />
+                            <Box sx={{ marginTop: 2 }}>
+                                <ImageComponent image={orderedVeterinarian?.user?.avatar} onHandleUploadImage={() => { }} />
                             </Box>
                         </Box>
 
                         <Box>
-                            <Typography gutterBottom>
-                                Name user:
-                            </Typography>
-                            <InputComponent value={orderedService?.user?.fullName} readOnly />
-                            <Typography gutterBottom>
-                                Phone:
-                            </Typography>
-                            <InputComponent value={orderedService?.user?.phone} readOnly />
-                            <Stack direction="row" spacing={2}>
-                                <Box>
-                                    <Typography gutterBottom>
-                                        Date visit:
-                                    </Typography>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker sx={{ width: 150 }} readOnly slotProps={{ textField: { size: 'small' } }} value={dayjs(orderedService?.dateStart)} />
-                                    </LocalizationProvider>
-                                </Box>
-                                <Box>
-                                    <Typography gutterBottom>
-                                        Time visit:
-                                    </Typography>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <TimeField
-                                            readOnly
-                                            sx={{ width: 150 }}
-                                            slotProps={{ textField: { size: 'small' } }}
-                                            defaultValue={dayjs(orderedService?.dateStart + 'T' + orderedService?.visitingTimeStart)}
-                                        />
-                                    </LocalizationProvider>
-                                </Box>
-                            </Stack>
-                            <Stack direction="row" spacing={2}>
-                                <Box>
-                                    <Typography gutterBottom>
-                                        Date receive:
-                                    </Typography>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker readOnly sx={{ width: 150 }} slotProps={{ textField: { size: 'small' } }} value={dayjs(orderedService?.dateEnd)} />
-                                    </LocalizationProvider>
-                                </Box>
-                                <Box>
-                                    <Typography gutterBottom>
-                                        Time receive:
-                                    </Typography>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <TimeField
-                                            readOnly
-                                            sx={{ width: 150 }}
-                                            slotProps={{ textField: { size: 'small' } }}
-                                            defaultValue={dayjs(orderedService?.dateEnd + 'T' + orderedService?.visitingTimeEnd)}
-                                        />
-                                    </LocalizationProvider>
-                                </Box>
-                            </Stack>
+
+                            <Box>
+                                <Typography gutterBottom>
+                                    Date start:
+                                </Typography>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker readOnly slotProps={{ textField: { size: 'small' } }} value={dayjs(orderedVeterinarian?.dateStart)} />
+                                </LocalizationProvider>
+                            </Box>
+                            <Box>
+                                <Typography gutterBottom>
+                                    Date end:
+                                </Typography>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker readOnly slotProps={{ textField: { size: 'small' } }} value={dayjs(orderedVeterinarian?.dateEnd)} />
+                                </LocalizationProvider>
+                            </Box>
+
                             <Typography gutterBottom>
                                 Total price:
                             </Typography>
@@ -279,7 +174,7 @@ const ModalDetail = ({ open, handleClose, types, setLoading, handleReload, order
                                 size='small'
                                 type='number'
                                 readOnly
-                                value={orderedService?.totalPrice}
+                                value={orderedVeterinarian?.totalPrice}
                                 inputMode={<BootstrapInput />}
                                 endAdornment={<InputAdornment position="end">$</InputAdornment>}
                             />
@@ -288,7 +183,7 @@ const ModalDetail = ({ open, handleClose, types, setLoading, handleReload, order
                             </Typography>
                             <FormControl sx={{ minWidth: 120, borderRadius: 2, marginBottom: 2 }} size="small">
                                 <Select
-                                    value={status ? status : orderedService?.status}
+                                    value={status ? status : orderedVeterinarian?.status}
                                     onChange={(e) => setStatus(e.target.value)}
                                     input={<BootstrapInput />}
                                 >
@@ -301,13 +196,13 @@ const ModalDetail = ({ open, handleClose, types, setLoading, handleReload, order
                             <Typography gutterBottom>
                                 Payment:
                             </Typography>
-                            <InputComponent value={orderedService?.payment ? 'Done' : 'None'} readOnly />
+                            <InputComponent value={orderedVeterinarian?.payment ? 'Done' : 'None'} readOnly />
                         </Box>
                     </Stack>
                 </DialogContent>
                 <DialogActions>
                     {error && <span className='error'>{error}</span>}
-                    <Button autoFocus onClick={handleApprove}>
+                    <Button autoFocus onClick={handleApprove} disabled={orderedVeterinarian?.status === status}>
                         Approve
                     </Button>
                 </DialogActions>
@@ -320,7 +215,7 @@ const ModalDetail = ({ open, handleClose, types, setLoading, handleReload, order
                         handleClose()
                     }}
                         severity="success" sx={{ width: '100%' }}>
-                        Approve ordered service successful!
+                        Approve ordered veterinarian successful!
                     </Alert>
                 </Snackbar>
             </BootstrapDialog>

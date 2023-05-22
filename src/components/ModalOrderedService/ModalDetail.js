@@ -307,7 +307,7 @@ const ModalDetail = ({ open, handleClose, types, setLoading, handleReload, order
                 </DialogContent>
                 <DialogActions>
                     {error && <span className='error'>{error}</span>}
-                    <Button autoFocus onClick={handleApprove}>
+                    <Button autoFocus onClick={handleApprove} disabled={orderedService?.status === status}>
                         Approve
                     </Button>
                 </DialogActions>

@@ -18,4 +18,6 @@ export default {
     COMPLETE: '/complete',
     CANCEL: '/cancel',
     VETERINARIANS: '/veterinarians',
+    VETERINARIAN: '/veterinarian',
+    BOOKING_VETERINARIAN: '/bookingVeterinarian',
 };
