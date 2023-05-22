@@ -12,7 +12,6 @@ import { useState } from 'react';
 import StyledTextarea from '../InputComponent/TextAreaComponet';
 import ImageComponent from '../ImageComponent/ImageComponent';
 import Api from '../../api/Api';
-import { useEffect } from 'react';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -57,11 +56,12 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => {
+const ModalAdd = ({ open, handleClose, setLoading, handleReload }) => {
     const [name, setName] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [address, setAddress] = useState('')
     const [price, setPrice] = useState(0)
     const [description, setDescription] = useState(null)
-    const [typeService, setTypeService] = useState("SERVICE_BY_DAY")
     const [image, setImage] = useState(null)
     const [error, setError] = useState(null)
     const [alert, setAlert] = useState(false)
@@ -78,8 +78,11 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
             case 'price':
                 setPrice(e.target.value)
                 break;
-            case 'type':
-                setTypeService(e.target.value)
+            case 'phone':
+                setPhoneNumber(e.target.value)
+                break;
+            case 'address':
+                setAddress(e.target.value)
                 break;
             case 'description':
                 setDescription(e.target.value)
@@ -87,31 +90,17 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
         }
     }
 
-    const isValidUrl = urlString => {
-        try {
-            return Boolean(new URL(urlString));
-        }
-        catch (e) {
-            return false;
-        }
-    }
-
-    const updateService = async () => {
+    const addVeterinarian = async () => {
+        let formData = new FormData();
         try {
             setLoading(true)
-            let formData = new FormData()
-            const body = {
-                name: name,
-                price: price,
-                description: description,
-                typeService: typeService,
-            };
-            const blob = new Blob([JSON.stringify(body)], {
-                type: 'application/json'
-            });
-            formData.append('service', blob)
-            formData.append("file", isValidUrl(image) ? null : image)
-            const response = await Api.updateService(service.id, formData)
+            formData.append("name", name)
+            formData.append("price", price)
+            formData.append("phoneNumber", phoneNumber)
+            formData.append("address", address)
+            formData.append("description", description)
+            formData.append("file", image)
+            const response = await Api.addVeterinarian(formData)
             if (response.data.status === "Success") {
                 setAlert(true)
                 handleReload()
@@ -127,14 +116,6 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
         }
     }
 
-    useEffect(() => {
-        setImage(service?.image)
-        setName(service?.name)
-        setDescription(service?.description)
-        setPrice(service?.price)
-        setTypeService(service?.typeService)
-    }, [service])
-
     return (
         <BootstrapDialog
             onClose={handleClose}
@@ -143,7 +124,7 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
             maxWidth="false"
         >
             <Modal id="customized-dialog-title" onClose={handleClose} sx={{ fontWeight: 'bold' }}>
-                Add new service
+                Add new veterinarian
             </Modal>
             <DialogContent dividers>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -153,6 +134,14 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
                     Name:
                 </Typography>
                 <InputComponent onChange={(value) => handleChange(value, 'name')} value={name} />
+                <Typography gutterBottom>
+                    Phone:
+                </Typography>
+                <InputComponent onChange={(value) => handleChange(value, 'phone')} value={phoneNumber} />
+                <Typography gutterBottom>
+                    Address:
+                </Typography>
+                <InputComponent onChange={(value) => handleChange(value, 'address')} value={address} />
                 <Typography gutterBottom>
                     Price:
                 </Typography>
@@ -169,24 +158,10 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
                     Description:
                 </Typography>
                 <StyledTextarea minRows={3} maxRows={4} onChange={(value) => handleChange(value, 'description')} value={description} />
-                <Typography gutterBottom>
-                    Type service:
-                </Typography>
-                <FormControl sx={{ minWidth: 120, borderRadius: 2 }} size="small">
-                    <Select
-                        value={typeService}
-                        onChange={(value) => handleChange(value, 'type')}
-                        displayEmpty
-                        input={<BootstrapInput />}
-                    >
-                        <MenuItem value="SERVICE_BY_DAY">Service by day</MenuItem>
-                        <MenuItem value="SERVICE_NOT_BY_DAY">Service by time</MenuItem>
-                    </Select>
-                    {error && <span className='error'>{error}</span>}
-                </FormControl>
             </DialogContent>
             <DialogActions>
-                <Button autoFocus onClick={updateService}>
+                {error && <span className='error'>{error}</span>}
+                <Button autoFocus onClick={addVeterinarian}>
                     Save changes
                 </Button>
             </DialogActions>
@@ -199,11 +174,11 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
                     handleClose()
                 }}
                     severity="success" sx={{ width: '100%' }}>
-                    Edit service successful!
+                    Add veterinarian successful!
                 </Alert>
             </Snackbar>
         </BootstrapDialog>
     );
 };
 
-export default ModalEdit;
+export default ModalAdd;

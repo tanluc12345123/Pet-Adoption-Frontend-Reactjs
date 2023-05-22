@@ -17,4 +17,5 @@ export default {
     APPROVE: '/approve',
     COMPLETE: '/complete',
     CANCEL: '/cancel',
+    VETERINARIANS: '/veterinarians',
 };

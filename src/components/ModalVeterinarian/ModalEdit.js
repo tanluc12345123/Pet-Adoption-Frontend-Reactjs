@@ -57,11 +57,12 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => {
+const ModalEdit = ({ open, handleClose, setLoading, handleReload, veterinarian }) => {
     const [name, setName] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [address, setAddress] = useState('')
     const [price, setPrice] = useState(0)
     const [description, setDescription] = useState(null)
-    const [typeService, setTypeService] = useState("SERVICE_BY_DAY")
     const [image, setImage] = useState(null)
     const [error, setError] = useState(null)
     const [alert, setAlert] = useState(false)
@@ -78,8 +79,11 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
             case 'price':
                 setPrice(e.target.value)
                 break;
-            case 'type':
-                setTypeService(e.target.value)
+            case 'phone':
+                setPhoneNumber(e.target.value)
+                break;
+            case 'address':
+                setAddress(e.target.value)
                 break;
             case 'description':
                 setDescription(e.target.value)
@@ -96,22 +100,24 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
         }
     }
 
-    const updateService = async () => {
+    const updateVeterinarian = async () => {
         try {
             setLoading(true)
             let formData = new FormData()
             const body = {
                 name: name,
+                phoneNumber: phoneNumber,
+                address: address,
                 price: price,
                 description: description,
-                typeService: typeService,
             };
             const blob = new Blob([JSON.stringify(body)], {
                 type: 'application/json'
             });
-            formData.append('service', blob)
-            formData.append("file", isValidUrl(image) ? null : image)
-            const response = await Api.updateService(service.id, formData)
+            formData.append('veterinarian', blob)
+            formData.append("file", isValidUrl(image) ? '' : image)
+            console.log(formData)
+            const response = await Api.updateVeterinarian(veterinarian.id, formData)
             if (response.data.status === "Success") {
                 setAlert(true)
                 handleReload()
@@ -128,12 +134,13 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
     }
 
     useEffect(() => {
-        setImage(service?.image)
-        setName(service?.name)
-        setDescription(service?.description)
-        setPrice(service?.price)
-        setTypeService(service?.typeService)
-    }, [service])
+        setImage(veterinarian?.image)
+        setName(veterinarian?.name)
+        setPhoneNumber(veterinarian?.phoneNumber)
+        setAddress(veterinarian?.address)
+        setDescription(veterinarian?.description)
+        setPrice(veterinarian?.price)
+    }, [veterinarian])
 
     return (
         <BootstrapDialog
@@ -143,7 +150,7 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
             maxWidth="false"
         >
             <Modal id="customized-dialog-title" onClose={handleClose} sx={{ fontWeight: 'bold' }}>
-                Add new service
+                Edit veterinarian
             </Modal>
             <DialogContent dividers>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -153,6 +160,14 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
                     Name:
                 </Typography>
                 <InputComponent onChange={(value) => handleChange(value, 'name')} value={name} />
+                <Typography gutterBottom>
+                    Phone:
+                </Typography>
+                <InputComponent onChange={(value) => handleChange(value, 'phone')} value={phoneNumber} />
+                <Typography gutterBottom>
+                    Address:
+                </Typography>
+                <InputComponent onChange={(value) => handleChange(value, 'address')} value={address} />
                 <Typography gutterBottom>
                     Price:
                 </Typography>
@@ -169,24 +184,10 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
                     Description:
                 </Typography>
                 <StyledTextarea minRows={3} maxRows={4} onChange={(value) => handleChange(value, 'description')} value={description} />
-                <Typography gutterBottom>
-                    Type service:
-                </Typography>
-                <FormControl sx={{ minWidth: 120, borderRadius: 2 }} size="small">
-                    <Select
-                        value={typeService}
-                        onChange={(value) => handleChange(value, 'type')}
-                        displayEmpty
-                        input={<BootstrapInput />}
-                    >
-                        <MenuItem value="SERVICE_BY_DAY">Service by day</MenuItem>
-                        <MenuItem value="SERVICE_NOT_BY_DAY">Service by time</MenuItem>
-                    </Select>
-                    {error && <span className='error'>{error}</span>}
-                </FormControl>
             </DialogContent>
             <DialogActions>
-                <Button autoFocus onClick={updateService}>
+                {error && <span className='error'>{error}</span>}
+                <Button autoFocus onClick={updateVeterinarian}>
                     Save changes
                 </Button>
             </DialogActions>
@@ -199,7 +200,7 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
                     handleClose()
                 }}
                     severity="success" sx={{ width: '100%' }}>
-                    Edit service successful!
+                    Edit veterinarian successful!
                 </Alert>
             </Snackbar>
         </BootstrapDialog>

@@ -9,7 +9,7 @@ import Api from '../../../api/Api';
 import { useEffect } from 'react';
 import DetailsIcon from '@mui/icons-material/Details';
 import DoDisturbOnOutlinedIcon from '@mui/icons-material/DoDisturbOnOutlined';
-import ModalDetail from '../../../components/ModalOrderedService/ModalDetail';
+import ModalDetail from '../../../components/ModalOrderedVeterinarian/ModalDetail';
 import ModalDelete from '../../../components/ModalTypePet/ModalDelete';
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 import TocIcon from '@mui/icons-material/Toc';
@@ -92,8 +92,8 @@ const headerCell = [
     },
 ]
 
-const OrderServicePage = () => {
-    const title = "Ordered Service";
+const OrderVeterinarianPage = () => {
+    const title = "Ordered Veterinarian";
     const [isLoading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [content, setContent] = useState('');
@@ -347,4 +347,4 @@ const OrderServicePage = () => {
     );
 };
 
-export default OrderServicePage;
+export default OrderVeterinarianPage;
