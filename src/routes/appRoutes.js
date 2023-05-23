@@ -12,6 +12,10 @@ import VeterinarianPageLayout from '../pages/Veterinarians/VeterinarianPageLayou
 import VeterinarianPage from '../pages/Veterinarians/Veterinarian/index';
 import OrderVeterinarianPage from '../pages/Veterinarians/OrderVeterinarian/index';
 import VaccinesOutlinedIcon from '@mui/icons-material/VaccinesOutlined';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import VolunteeringPageLayout from '../pages/Volunteers/VolunteeringPageLayout';
+import VolunteeringPage from '../pages/Volunteers/Volunteerings/index';
+import RegisteredVolunteersPage from '../pages/Volunteers/RegisteredVolunteers/index';
 
 const appRoutes = [
     {
@@ -100,6 +104,33 @@ const appRoutes = [
                 state: "veterinarian.ordered",
                 sidebarProps: {
                     displayText: "Ordered Veterinarian"
+                },
+            },
+        ]
+    },
+    {
+        path: "/volunteering",
+        element: <VolunteeringPageLayout />,
+        state: "volunteering",
+        sidebarProps: {
+            displayText: "Volunteering",
+            icon: <VolunteerActivismIcon />
+        },
+        child: [
+            {
+                path: "/volunteering/index",
+                element: <VolunteeringPage />,
+                state: "volunteering.index",
+                sidebarProps: {
+                    displayText: "Volunteering Activities"
+                },
+            },
+            {
+                path: "/volunteering/registered",
+                element: <RegisteredVolunteersPage />,
+                state: "volunteering.registered",
+                sidebarProps: {
+                    displayText: "Registered Volunteering"
                 },
             },
         ]
