@@ -17,7 +17,10 @@ export default {
     APPROVE: '/approve',
     COMPLETE: '/complete',
     CANCEL: '/cancel',
+    DELETE: '/delete',
     VETERINARIANS: '/veterinarians',
     VETERINARIAN: '/veterinarian',
     BOOKING_VETERINARIAN: '/bookingVeterinarian',
+    VOLUNTEERS: '/volunteers',
+    CUSTOMERS: '/customers',
 };
