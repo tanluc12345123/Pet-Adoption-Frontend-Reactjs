@@ -16,6 +16,8 @@ import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import VolunteeringPageLayout from '../pages/Volunteers/VolunteeringPageLayout';
 import VolunteeringPage from '../pages/Volunteers/Volunteerings/index';
 import RegisteredVolunteersPage from '../pages/Volunteers/RegisteredVolunteers/index';
+import TrashPage from '../pages/Trash/TrashPage';
+import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 
 const appRoutes = [
     {
@@ -134,6 +136,15 @@ const appRoutes = [
                 },
             },
         ]
+    },
+    {
+        path: "/trash",
+        element: <TrashPage />,
+        state: "trash",
+        sidebarProps: {
+            displayText: "Trash",
+            icon: <RestoreFromTrashIcon />
+        }
     },
 ];
 

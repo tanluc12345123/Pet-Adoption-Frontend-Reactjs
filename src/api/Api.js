@@ -124,6 +124,44 @@ const Api = {
     },
     rejectRegisteredVolunteer: (id, reason) => {
         return AxiosClient.put(Route.USERS + '/' + id + Route.DELETE + '?reason=' + reason)
+    },
+
+    getPetTrash: () => {
+        return AxiosClient.get(Route.NO_LOGIN + Route.PET + '?trash=true')
+    },
+
+    getServicesTrash: () => {
+        return AxiosClient.get(Route.NO_LOGIN + Route.SERVICES + Route.TRASH)
+    },
+    getVeterinariansTrash: () => {
+        return AxiosClient.get(Route.NO_LOGIN + Route.VETERINARIANS + Route.TRASH)
+    },
+    getVolunteeringActivitiesTrash: () => {
+        return AxiosClient.get(Route.NO_LOGIN + Route.VOLUNTEERS + Route.TRASH)
+    },
+    restorePet: (id) => {
+        return AxiosClient.put(Route.PET + '/' + id + Route.RESTORE)
+    },
+    restoreService: (id) => {
+        return AxiosClient.put(Route.SERVICES + '/' + id + Route.RESTORE)
+    },
+    restoreVeterinarian: (id) => {
+        return AxiosClient.put(Route.VETERINARIANS + '/' + id + Route.RESTORE)
+    },
+    restoreVolunteering: (id) => {
+        return AxiosClient.put(Route.VOLUNTEERS + '/' + id + Route.RESTORE)
+    },
+    deletePetForever: (id) => {
+        return AxiosClient.delete(Route.PET + '/' + id)
+    },
+    deleteServiceForever: (id) => {
+        return AxiosClient.delete(Route.SERVICES + '/' + id)
+    },
+    deleteVeterinarianForever: (id) => {
+        return AxiosClient.delete(Route.VETERINARIANS + '/' + id)
+    },
+    deleteVolunteeringForever: (id) => {
+        return AxiosClient.delete(Route.VOLUNTEERS + '/' + id)
     }
 }
 
