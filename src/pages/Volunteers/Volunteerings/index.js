@@ -112,7 +112,7 @@ const VolunteeringPage = () => {
     const handleSearchResultChange = (event) => {
         setSearchResult(event.target.value)
         const query = event.target.value;
-        var updatedList = [...volunteerings];
+        var updatedList = [...volunteeringByStatus];
         if (query != "") {
             updatedList = updatedList.filter((item) => {
                 return item?.name?.toLowerCase().includes(query.toLowerCase()) || item?.requirement?.toLowerCase().includes(query.toLowerCase());
@@ -179,7 +179,7 @@ const VolunteeringPage = () => {
                 Volunteering Activities
             </Typography>
 
-            <Paper elevation={12} sx={{ display: 'flex', padding: 5, marginTop: 2, flexDirection: 'column' }}>
+            <Paper elevation={12} sx={{ display: 'flex', padding: 5, margin: 2, flexDirection: 'column' }}>
                 <Box sx={{ marginBottom: 2, display: 'flex' }}>
                     <InputComponent aria-label="Search" placeholder="Search..." onChange={handleSearchResultChange} value={searchResult} />
                 </Box>
