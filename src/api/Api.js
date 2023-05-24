@@ -162,6 +162,12 @@ const Api = {
     },
     deleteVolunteeringForever: (id) => {
         return AxiosClient.delete(Route.VOLUNTEERS + '/' + id)
+    },
+    getAppointmentPet: () => {
+        return AxiosClient.get(Route.USERS + Route.APPOINTMENT)
+    },
+    setAppointmentByStatus: (id, status) => {
+        return AxiosClient.put(Route.USERS + Route.APPOINTMENT + '/' + id + Route.STATUS + '?status=' + status)
     }
 }
 

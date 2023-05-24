@@ -23,4 +23,6 @@ export default {
     BOOKING_VETERINARIAN: '/bookingVeterinarian',
     VOLUNTEERS: '/volunteers',
     CUSTOMERS: '/customers',
+    APPOINTMENT: '/appointment',
+    STATUS: '/status',
 };
