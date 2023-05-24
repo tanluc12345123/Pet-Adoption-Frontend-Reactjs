@@ -18,6 +18,7 @@ import VolunteeringPage from '../pages/Volunteers/Volunteerings/index';
 import RegisteredVolunteersPage from '../pages/Volunteers/RegisteredVolunteers/index';
 import TrashPage from '../pages/Trash/TrashPage';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
+import BookingAppointmentPet from '../pages/Pet/BookingAppointment/index';
 
 const appRoutes = [
     {
@@ -52,6 +53,14 @@ const appRoutes = [
                 state: "pet.schedule",
                 sidebarProps: {
                     displayText: "Schedule"
+                },
+            },
+            {
+                path: "/pet/booking",
+                element: <BookingAppointmentPet />,
+                state: "pet.booking",
+                sidebarProps: {
+                    displayText: "Booking Appointment"
                 },
             },
         ]
