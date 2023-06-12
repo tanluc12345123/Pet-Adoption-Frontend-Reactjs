@@ -204,7 +204,7 @@ const OrderVeterinarianPage = () => {
     return (
         <BaseScreen isLoading={isLoading} title={title} handleClose={() => setOpen(false)} open={open} content={content}>
             <Typography variant="h4">
-                Ordered Service
+                Ordered Veterinarian
             </Typography>
 
             <Paper elevation={12} sx={{ display: 'flex', padding: 5, marginTop: 2, flexDirection: 'column' }}>

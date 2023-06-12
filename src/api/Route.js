@@ -25,4 +25,7 @@ export default {
     CUSTOMERS: '/customers',
     APPOINTMENT: '/appointment',
     STATUS: '/status',
+    STATISTIC: '/statistic',
+    QUARTER: '/quarter',
+    YEAR: '/year',
 };
