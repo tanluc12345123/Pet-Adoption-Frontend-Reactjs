@@ -178,6 +178,9 @@ const Api = {
     getStatisticByYear: (year) => {
         return AxiosClient.get(Route.STATISTIC + Route.YEAR + '?year=' + year)
     },
+    getCustomers: () => {
+        return AxiosClient.get(Route.USERS + Route.ALL)
+    }
 }
 
 export default Api

@@ -1,51 +1,16 @@
 import React from 'react';
 import { useState } from 'react';
-import BaseScreen from '../../../components/BaseScreen/BaseScreen';
+import BaseScreen from '../../components/BaseScreen/BaseScreen';
 import { Paper, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TableFooter, TablePagination, Box, FormControl, Select, InputBase, MenuItem, Backdrop, CircularProgress, Dialog } from "@mui/material";
-import InputComponent from '../../../components/InputComponent/InputComponent';
-import Button from '../../../components/Button/Button';
+import InputComponent from '../../components/InputComponent/InputComponent';
+import Button from '../../components/Button/Button';
 import { styled } from '@mui/material/styles';
-import Api from '../../../api/Api';
+import Api from '../../api/Api';
 import { useEffect } from 'react';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
-import ModalAdd from '../../../components/ModalService/ModalAdd';
-import ModalEdit from '../../../components/ModalService/ModalEdit';
-import ModalDelete from '../../../components/ModalTypePet/ModalDelete';
-
-const BootstrapInput = styled(InputBase)(({ theme }) => ({
-    'label + &': {
-        marginTop: theme.spacing(3),
-    },
-    '& .MuiInputBase-input': {
-        minWidth: 150,
-        borderRadius: 12,
-        position: 'relative',
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid #ced4da',
-        fontSize: 16,
-        padding: '10px 26px 10px 12px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-        // Use the system font instead of the default Roboto font.
-        fontFamily: [
-            '-apple-system',
-            'BlinkMacSystemFont',
-            '"Segoe UI"',
-            'Roboto',
-            '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(','),
-        '&:focus': {
-            borderRadius: 4,
-            borderColor: '#80bdff',
-            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-        },
-    },
-}));
+import ModalDelete from '../../components/ModalTypePet/ModalDelete';
+import Moment from 'moment'
 
 const headerCell = [
     {
@@ -53,18 +18,33 @@ const headerCell = [
         label: 'Name',
     },
     {
-        id: 'price',
-        label: 'Price',
+        id: 'email',
+        label: 'Email',
         align: 'right',
     },
     {
-        id: 'type',
-        label: 'Type',
+        id: 'phone',
+        label: 'Phone number',
         align: 'right'
     },
     {
-        id: 'description',
-        label: 'Description',
+        id: 'gender',
+        label: 'Gender',
+        align: 'right'
+    },
+    {
+        id: 'birthDay',
+        label: 'Birth day',
+        align: 'right'
+    },
+    {
+        id: 'career',
+        label: 'Career',
+        align: 'right'
+    },
+    {
+        id: 'address',
+        label: 'Address',
         align: 'right'
     },
     {
@@ -74,14 +54,14 @@ const headerCell = [
     },
 ]
 
-const ServicePage = () => {
-    const title = "Service";
+const CustomerPage = () => {
     const [isLoading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [content, setContent] = useState('');
-    const [reload, setReload] = useState(false)
-    const [services, setServices] = useState([]);
-    const [service, setService] = useState({});
+    const [customers, setCustomers] = useState([]);
+    const [customer, setCustomer] = useState([]);
+    const title = "Customer";
+    const [reload, setReload] = useState(false);
 
     const [openModalAdd, setOpenModalAdd] = useState(false)
     const [openModalEdit, setOpenModalEdit] = useState(false)
@@ -105,21 +85,21 @@ const ServicePage = () => {
     const handleSearchResultChange = (event) => {
         setSearchResult(event.target.value)
         const query = event.target.value;
-        var updatedList = [...services];
+        var updatedList = [...customer];
         if (query != "") {
             updatedList = updatedList.filter((item) => {
-                return item.name.toLowerCase().includes(query.toLowerCase());
+                return item?.name?.toLowerCase().includes(query.toLowerCase()) || item?.phone?.toLowerCase().includes(query.toLowerCase());
             });
         }
         setFilterList(updatedList);
     }
 
-    const fetchServices = async () => {
+    const fetchCustomers = async () => {
         try {
             setLoading(true)
-            const response = await Api.getServices()
+            const response = await Api.getCustomers()
             if (response.data.status === "Success") {
-                setServices(response.data.data)
+                setCustomers(response.data.data)
                 setFilterList(response.data.data)
             }
             console.log(response.data)
@@ -131,39 +111,24 @@ const ServicePage = () => {
         }
     }
 
-    const deleteService = async () => {
-        try {
-            setLoading(true)
-            const response = await Api.deleteService(service.id)
-            if (response.data.status === "Success") {
-                setOpenModalDelete(false)
-                setReload(!reload)
-            }
-            setLoading(false)
-        } catch (error) {
-            setContent(error.message)
-            setOpen(true)
-            setLoading(false)
-        }
-    }
-
     useEffect(() => {
-        fetchServices()
-    }, [reload])
+        fetchCustomers()
+    },[reload])
 
     return (
         <BaseScreen isLoading={isLoading} title={title} handleClose={() => setOpen(false)} open={open} content={content}>
-            <Typography variant="h4">
-                Service
-            </Typography>
-
-            <Paper elevation={12} sx={{ display: 'flex', padding: 5, marginTop: 2, flexDirection: 'column' }}>
+            <Box>
+                <Typography variant="h4" sx={{ margin: 3 }}>
+                    Customers
+                </Typography>
+            </Box>
+            <Paper elevation={12} sx={{ display: 'flex', padding: 3, marginTop: 2, flexDirection: 'column', margin: 3 }}>
                 <Box sx={{ marginBottom: 2, display: 'flex' }}>
                     <InputComponent aria-label="Search" placeholder="Search..." onChange={handleSearchResultChange} value={searchResult} />
                 </Box>
                 <Box sx={{ justifyContent: 'flex-end', display: 'flex', position: 'absolute', right: 0, marginRight: 11 }}>
-                    <Button style={{ padding: 14 }} onClick={() => setOpenModalAdd(true)}>Add Service</Button>
-                    <ModalAdd open={openModalAdd} handleClose={() => setOpenModalAdd(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} />
+                    <Button style={{ padding: 14 }} onClick={() => setOpenModalAdd(true)}>Add Account Admin</Button>
+                    {/* <ModalAdd open={openModalAdd} handleClose={() => setOpenModalAdd(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} /> */}
                 </Box>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -180,48 +145,39 @@ const ServicePage = () => {
                             {filterList && (rowsPerPage > 0
                                 ? filterList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 : filterList
-                            ).map((service) => (
+                            ).map((customer) => (
                                 <TableRow>
-                                    <TableCell><Typography
-                                        sx={{
-                                            display: '-webkit-box',
-                                            overflow: 'hidden',
-                                            WebkitBoxOrient: 'vertical',
-                                            WebkitLineClamp: 2,
-                                        }}>
-                                        {service.name}
+                                    <TableCell><Typography>
+                                        {customer.fullName ?? 'None'}
                                     </Typography></TableCell>
-                                    <TableCell>{service.price.toLocaleString('en-US')}$</TableCell>
-                                    <TableCell>{service.typeService === "SERVICE_BY_DAY" ? 'Service by day' : 'Service by time'}</TableCell>
+                                    <TableCell>{customer.email ?? 'None'}</TableCell>
+                                    <TableCell>{customer.phone}</TableCell>
+                                    <TableCell>{customer.gender ? 'Male' : 'Female'}</TableCell>
+                                    <TableCell>{customer.birthday ? Moment(customer.birthday).format('DD/MM/yyyy'): 'None'}</TableCell>
+                                    <TableCell>{customer.career ?? 'None'}</TableCell>
                                     <TableCell>
-                                        <Typography
-                                            sx={{
-                                                display: '-webkit-box',
-                                                overflow: 'hidden',
-                                                WebkitBoxOrient: 'vertical',
-                                                WebkitLineClamp: 2,
-                                            }}>
-                                            {service.description}
+                                        <Typography>
+                                            {customer.address ?? 'None'}
                                         </Typography></TableCell>
                                     <TableCell>
                                         <Box sx={{ display: 'flex' }}>
                                             <Button variant="contained" style={{ marginRight: 10, backgroundColor: 'green' }}
                                                 onClick={() => {
                                                     setOpenModalEdit(true)
-                                                    setService(service)
+                                                    setCustomer(customer)
                                                 }}
                                             ><DriveFileRenameOutlineIcon /></Button>
                                             <Button variant="contained" style={{ backgroundColor: 'red' }} onClick={() => {
                                                 setOpenModalDelete(true)
-                                                setService(service)
+                                                setCustomer(customer)
                                             }}><DeleteSweepIcon /></Button>
                                         </Box>
                                     </TableCell>
 
                                 </TableRow>
                             ))}
-                            <ModalEdit open={openModalEdit} handleClose={() => setOpenModalEdit(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} service={service} />
-                            <ModalDelete open={openModalDelete} handleClose={() => setOpenModalDelete(false)} title='Delete Service!' content='Are you sure delete this service?' handleClick={deleteService} />
+                            {/* <ModalEdit open={openModalEdit} handleClose={() => setOpenModalEdit(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} service={service} /> */}
+                            {/* <ModalDelete open={openModalDelete} handleClose={() => setOpenModalDelete(false)} title='Delete Service!' content='Are you sure delete this service?' handleClick={deleteService} /> */}
                         </TableBody>
                         <TableFooter>
                             <TableRow>
@@ -249,4 +205,4 @@ const ServicePage = () => {
     );
 };
 
-export default ServicePage;
+export default CustomerPage;

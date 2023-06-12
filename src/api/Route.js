@@ -28,4 +28,5 @@ export default {
     STATISTIC: '/statistic',
     QUARTER: '/quarter',
     YEAR: '/year',
+    ALL: '/all',
 };
