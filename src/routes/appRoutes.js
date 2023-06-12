@@ -19,6 +19,11 @@ import RegisteredVolunteersPage from '../pages/Volunteers/RegisteredVolunteers/i
 import TrashPage from '../pages/Trash/TrashPage';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import BookingAppointmentPet from '../pages/Pet/BookingAppointment/index';
+import InsightsIcon from '@mui/icons-material/Insights';
+import StatisticPageLayout from '../pages/Statistic/StatisticPageLayout';
+import StatisticByQuarterPage from '../pages/Statistic/StatisticByQuarter/StatisticByQuarterPage';
+import StatisticByYearPage from '../pages/Statistic/StatisticByYear/StatisticByYearPage';
+import StatisticByMonthPage from '../pages/Statistic/StatisticByMonth/StatisticByMonthPage';
 
 const appRoutes = [
     {
@@ -147,6 +152,41 @@ const appRoutes = [
         ]
     },
     {
+        path: "/statistic",
+        element: <StatisticPageLayout />,
+        state: "statistic",
+        sidebarProps: {
+            displayText: "Statistic",
+            icon: <InsightsIcon />
+        },
+        child: [
+            {
+                path: "/statistic/month",
+                element: <StatisticByMonthPage />,
+                state: "statistic.month",
+                sidebarProps: {
+                    displayText: "Statistic by month"
+                },
+            },
+            {
+                path: "/statistic/quarter",
+                element: <StatisticByQuarterPage />,
+                state: "statistic.quarter",
+                sidebarProps: {
+                    displayText: "Statistic by quarter"
+                },
+            },
+            {
+                path: "/statistic/year",
+                element: <StatisticByYearPage />,
+                state: "statistic.year",
+                sidebarProps: {
+                    displayText: "Statistic by year"
+                },
+            },
+        ]
+    },
+    {
         path: "/trash",
         element: <TrashPage />,
         state: "trash",
@@ -155,6 +195,7 @@ const appRoutes = [
             icon: <RestoreFromTrashIcon />
         }
     },
+    
 ];
 
 export default appRoutes;

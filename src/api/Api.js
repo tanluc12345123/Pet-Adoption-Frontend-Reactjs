@@ -168,7 +168,16 @@ const Api = {
     },
     setAppointmentByStatus: (id, status) => {
         return AxiosClient.put(Route.USERS + Route.APPOINTMENT + '/' + id + Route.STATUS + '?status=' + status)
-    }
+    },
+    getStatisticByMonth: (month) => {
+        return AxiosClient.get(Route.STATISTIC + '?month=' + month)
+    },
+    getStatisticByQuarter: (quarter, year) => {
+        return AxiosClient.get(Route.STATISTIC + Route.QUARTER + '?quarter=' + quarter + '&year=' + year)
+    },
+    getStatisticByYear: (year) => {
+        return AxiosClient.get(Route.STATISTIC + Route.YEAR + '?year=' + year)
+    },
 }
 
 export default Api
