@@ -19,6 +19,8 @@ import RegisteredVolunteersPage from '../pages/Volunteers/RegisteredVolunteers/i
 import TrashPage from '../pages/Trash/TrashPage';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import BookingAppointmentPet from '../pages/Pet/BookingAppointment/index';
+import StatisticPage from '../pages/Statistic/StatisticPage';
+import InsightsIcon from '@mui/icons-material/Insights';
 
 const appRoutes = [
     {
@@ -153,6 +155,15 @@ const appRoutes = [
         sidebarProps: {
             displayText: "Trash",
             icon: <RestoreFromTrashIcon />
+        }
+    },
+    {
+        path: "/statistic",
+        element: <StatisticPage />,
+        state: "statistic",
+        sidebarProps: {
+            displayText: "Statistic",
+            icon: <InsightsIcon />
         }
     },
 ];
