@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import BaseScreen from '../../components/BaseScreen/BaseScreen';
-import { Paper, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TableFooter, TablePagination, Box, FormControl, Select, InputBase, MenuItem, Backdrop, CircularProgress, Dialog } from "@mui/material";
+import { Paper, Typography, TableContainer, Table, TableHead, Snackbar, Alert, TableRow, TableCell, TableBody, TableFooter, TablePagination, Box, FormControl, Select, InputBase, MenuItem, Backdrop, CircularProgress, Dialog } from "@mui/material";
 import InputComponent from '../../components/InputComponent/InputComponent';
 import Button from '../../components/Button/Button';
 import { styled } from '@mui/material/styles';
@@ -11,6 +11,8 @@ import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutli
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import ModalDelete from '../../components/ModalTypePet/ModalDelete';
 import Moment from 'moment'
+import ModalEdit from '../../components/ModalCustomer/ModalEdit';
+import ModalAdd from '../../components/ModalCustomer/ModalAdd';
 
 const headerCell = [
     {
@@ -72,6 +74,7 @@ const CustomerPage = () => {
 
     const [searchResult, setSearchResult] = useState('');
     const [filterList, setFilterList] = useState([]);
+    const [alert, setAlert] = useState(false)
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -85,7 +88,7 @@ const CustomerPage = () => {
     const handleSearchResultChange = (event) => {
         setSearchResult(event.target.value)
         const query = event.target.value;
-        var updatedList = [...customer];
+        var updatedList = [...customers];
         if (query != "") {
             updatedList = updatedList.filter((item) => {
                 return item?.name?.toLowerCase().includes(query.toLowerCase()) || item?.phone?.toLowerCase().includes(query.toLowerCase());
@@ -101,6 +104,24 @@ const CustomerPage = () => {
             if (response.data.status === "Success") {
                 setCustomers(response.data.data)
                 setFilterList(response.data.data)
+            }
+            console.log(response.data)
+            setLoading(false)
+        } catch (error) {
+            setContent(error.message)
+            setOpen(true)
+            setLoading(false)
+        }
+    }
+
+    const deleteAccount = async() => {
+        try {
+            setLoading(true)
+            const response = await Api.deleteAccount(customer.id)
+            if (response.data.status === "Success") {
+                setAlert(true)
+                setReload(!reload)
+                setOpenModalDelete(false)
             }
             console.log(response.data)
             setLoading(false)
@@ -128,7 +149,7 @@ const CustomerPage = () => {
                 </Box>
                 <Box sx={{ justifyContent: 'flex-end', display: 'flex', position: 'absolute', right: 0, marginRight: 11 }}>
                     <Button style={{ padding: 14 }} onClick={() => setOpenModalAdd(true)}>Add Account Admin</Button>
-                    {/* <ModalAdd open={openModalAdd} handleClose={() => setOpenModalAdd(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} /> */}
+                    <ModalAdd open={openModalAdd} handleClose={() => setOpenModalAdd(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} />
                 </Box>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -176,14 +197,14 @@ const CustomerPage = () => {
 
                                 </TableRow>
                             ))}
-                            {/* <ModalEdit open={openModalEdit} handleClose={() => setOpenModalEdit(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} service={service} /> */}
-                            {/* <ModalDelete open={openModalDelete} handleClose={() => setOpenModalDelete(false)} title='Delete Service!' content='Are you sure delete this service?' handleClick={deleteService} /> */}
+                            <ModalEdit open={openModalEdit} handleClose={() => setOpenModalEdit(false)} setLoading={(value) => setLoading(value)} handleReload={() => setReload(!reload)} user={customer} />
+                            <ModalDelete open={openModalDelete} handleClose={() => setOpenModalDelete(false)} title='Delete Account!' content='Are you sure delete this account?' handleClick={deleteAccount} />
                         </TableBody>
                         <TableFooter>
                             <TableRow>
                                 <TablePagination
                                     rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                    colSpan={4}
+                                    colSpan={2}
                                     count={filterList.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
@@ -201,6 +222,16 @@ const CustomerPage = () => {
                     </Table>
                 </TableContainer>
             </Paper>
+            <Snackbar open={alert} autoHideDuration={6000} onClose={() => {
+                setAlert(false)
+            }}>
+                <Alert onClose={() => {
+                    setAlert(false)
+                }}
+                    severity="success" sx={{ width: '100%' }}>
+                    Delete account successful!
+                </Alert>
+            </Snackbar>
         </BaseScreen>
     );
 };

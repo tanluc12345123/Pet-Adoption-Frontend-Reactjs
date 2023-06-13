@@ -1,5 +1,6 @@
 export default {
     LOGIN: '/auth/signin',
+    SIGNUP: '/auth/signup',
     USERS:'/users',
     CHANGE_PASSWORD: '/changePass',
     TYPE_PET: '/types',
@@ -29,4 +30,5 @@ export default {
     QUARTER: '/quarter',
     YEAR: '/year',
     ALL: '/all',
+    ADMIN: '/admin',
 };

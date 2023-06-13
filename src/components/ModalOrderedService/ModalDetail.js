@@ -166,12 +166,12 @@ const ModalDetail = ({ open, handleClose, types, setLoading, handleReload, order
                             </Typography>
                             <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
                                 <Stack direction="column" spacing={{ xs: 2 }}>
-                                    <ImageComponent image={orderedService?.pet?.image1} />
-                                    <ImageComponent image={orderedService?.pet?.image2} />
+                                    <ImageComponent image={orderedService?.pet?.petImage?.image1} />
+                                    <ImageComponent image={orderedService?.pet?.petImage?.image2} />
                                 </Stack>
                                 <Stack direction="column" spacing={{ xs: 2 }}>
-                                    <ImageComponent image={orderedService?.pet?.image3} />
-                                    <ImageComponent image={orderedService?.pet?.image4} />
+                                    <ImageComponent image={orderedService?.pet?.petImage?.image3} />
+                                    <ImageComponent image={orderedService?.pet?.petImage?.image4} />
                                 </Stack>
                             </Stack>
                         </Box>
