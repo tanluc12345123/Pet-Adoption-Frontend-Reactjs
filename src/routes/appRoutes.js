@@ -24,6 +24,7 @@ import StatisticPageLayout from '../pages/Statistic/StatisticPageLayout';
 import StatisticByQuarterPage from '../pages/Statistic/StatisticByQuarter/StatisticByQuarterPage';
 import StatisticByYearPage from '../pages/Statistic/StatisticByYear/StatisticByYearPage';
 import StatisticByMonthPage from '../pages/Statistic/StatisticByMonth/StatisticByMonthPage';
+import CustomerPage from '../pages/Customer/CustomerPage';
 
 const appRoutes = [
     {
@@ -32,6 +33,15 @@ const appRoutes = [
         state: "home",
         sidebarProps: {
             displayText: "Account",
+            icon: <PersonIcon />
+        }
+    },
+    {
+        path: "/customers",
+        element: <CustomerPage />,
+        state: "customers",
+        sidebarProps: {
+            displayText: "Customers",
             icon: <PersonIcon />
         }
     },

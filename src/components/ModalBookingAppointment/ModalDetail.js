@@ -154,12 +154,12 @@ const ModalDetail = ({ open, handleClose, setLoading, handleReload, appointment,
                             </Typography>
                             <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
                                 <Stack direction="column" spacing={{ xs: 2 }}>
-                                    <ImageComponent image={appointment?.pet?.image1} />
-                                    <ImageComponent image={appointment?.pet?.image2} />
+                                    <ImageComponent image={appointment?.pet?.petImage?.image1} />
+                                    <ImageComponent image={appointment?.pet?.petImage?.image2} />
                                 </Stack>
                                 <Stack direction="column" spacing={{ xs: 2 }}>
-                                    <ImageComponent image={appointment?.pet?.image3} />
-                                    <ImageComponent image={appointment?.pet?.image4} />
+                                    <ImageComponent image={appointment?.pet?.petImage?.image3} />
+                                    <ImageComponent image={appointment?.pet?.petImage?.image4} />
                                 </Stack>
                             </Stack>
                         </Box>

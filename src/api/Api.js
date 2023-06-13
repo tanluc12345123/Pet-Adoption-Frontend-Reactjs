@@ -127,7 +127,7 @@ const Api = {
     },
 
     getPetTrash: () => {
-        return AxiosClient.get(Route.NO_LOGIN + Route.PET + '?trash=true')
+        return AxiosClient.get(Route.NO_LOGIN + Route.PET + Route.TRASH)
     },
 
     getServicesTrash: () => {
@@ -177,6 +177,25 @@ const Api = {
     },
     getStatisticByYear: (year) => {
         return AxiosClient.get(Route.STATISTIC + Route.YEAR + '?year=' + year)
+    },
+    getCustomers: () => {
+        return AxiosClient.get(Route.USERS + Route.ALL)
+    },
+    adminChangePassword: (id, password) => {
+        return AxiosClient.put(Route.USERS + '/' + id + Route.CHANGE_PASSWORD + Route.ADMIN + '?password=' + password)
+    },
+    deleteAccount: (id) => {
+        return AxiosClient.delete(Route.USERS + '/' + id)
+    },
+    signupAccountAdmin: (username, password) => {
+        return AxiosClient.post(Route.SIGNUP, {
+            phone: username,
+            password: password,
+            role: 'admin'
+        })
+    },
+    getPetAdoption: (idUser) => {
+        return AxiosClient.get(Route.PET + '/user' + '/' + idUser)
     },
 }
 
