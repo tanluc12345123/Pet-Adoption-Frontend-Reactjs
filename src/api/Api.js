@@ -123,7 +123,7 @@ const Api = {
         return AxiosClient.get(Route.VOLUNTEERS + Route.CUSTOMERS)
     },
     rejectRegisteredVolunteer: (id, reason) => {
-        return AxiosClient.put(Route.USERS + '/' + id + Route.DELETE + '?reason=' + reason)
+        return AxiosClient.put(Route.USERS + '/' + id + Route.CANCEL + '?reason=' + reason)
     },
 
     getPetTrash: () => {

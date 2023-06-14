@@ -143,7 +143,7 @@ const ModalEdit = ({ open, handleClose, setLoading, handleReload, service }) => 
             maxWidth="false"
         >
             <Modal id="customized-dialog-title" onClose={handleClose} sx={{ fontWeight: 'bold' }}>
-                Add new service
+                Edit service
             </Modal>
             <DialogContent dividers>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>

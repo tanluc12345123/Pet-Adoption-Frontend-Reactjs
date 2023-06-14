@@ -270,7 +270,7 @@ const PetPage = () => {
                                         <TableCell>{pet.breed}</TableCell>
                                         <TableCell>{pet.age}</TableCell>
                                         <TableCell>{pet.price}</TableCell>
-                                        <TableCell>{pet.adopted ? 'Done' : 'None'}</TableCell>
+                                        <TableCell>{pet.statusAdopt ? 'Done' : 'None'}</TableCell>
                                         <TableCell>
                                             <Box sx={{ display: 'flex' }}>
                                                 <Button variant="contained" style={{ marginRight: 10, backgroundColor: 'green' }}

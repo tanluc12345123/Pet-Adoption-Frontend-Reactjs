@@ -252,7 +252,7 @@ const OrderVeterinarianPage = () => {
                                         }}>
                                         {order.user.fullName}
                                     </Typography></TableCell>
-                                    <TableCell>{order.user.phoneNumber}</TableCell>
+                                    <TableCell>{order.user.phone}</TableCell>
                                     <TableCell>{order.dateStart}</TableCell>
                                     <TableCell>{order.dateEnd}</TableCell>
                                     <TableCell>{order.totalPrice.toLocaleString('en-US')}$</TableCell>
