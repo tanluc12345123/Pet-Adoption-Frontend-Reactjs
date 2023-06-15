@@ -207,7 +207,6 @@ const ModalEditPet = ({ open, handleClose, setLoading, handleReload, types, pet 
         setName(pet.name)
         setGender(pet.gender ? 1 : 0)
         setColor(pet.color)
-        setName(pet.breed)
         setWeight(pet.weight)
         setAge(pet.age)
         setBreed(pet.breed)
