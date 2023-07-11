@@ -33,6 +33,7 @@ const StatisticByMonthPage = () => {
         try {
             setLoading(true)
             const response = await Api.getStatisticByMonth(Moment(month).format('MM/yyyy'))
+            console.log(response.data.data)
             if (response.data.status == "Success") {
                 setNumberPetAdoption(response.data.data.numberPetAdopt)
                 setNumberBookService(response.data.data.numberBookService)

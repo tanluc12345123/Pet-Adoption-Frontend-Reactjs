@@ -36,7 +36,7 @@ const Api = {
         return AxiosClient.delete(Route.TYPE_PET + '/' + id)
     },
     getPets: () => {
-        return AxiosClient.get(Route.NO_LOGIN + Route.PET + '?trash=false')
+        return AxiosClient.get(Route.NO_LOGIN + Route.PET + '/admin')
     },
     addPet: (idType, pet) => {
         return AxiosClient.post(Route.PET + Route.TYPE_PET + '/' + idType, pet, config)

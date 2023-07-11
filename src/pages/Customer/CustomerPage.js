@@ -188,10 +188,10 @@ const CustomerPage = () => {
                                                     setCustomer(customer)
                                                 }}
                                             ><DriveFileRenameOutlineIcon /></Button>
-                                            <Button variant="contained" style={{ backgroundColor: 'red' }} onClick={() => {
+                                            {/* <Button variant="contained" style={{ backgroundColor: 'red' }} onClick={() => {
                                                 setOpenModalDelete(true)
                                                 setCustomer(customer)
-                                            }}><DeleteSweepIcon /></Button>
+                                            }}><DeleteSweepIcon /></Button> */}
                                         </Box>
                                     </TableCell>
 
